@@ -1,0 +1,193 @@
+{% extends 'admin_base.html' %}
+{% block content %}
+
+<head>
+    <style>
+        .input_box {
+            border-radius: 5px;
+            border: .5px solid rgb(4, 4, 4);
+            padding: 5px 10px;
+        }
+
+        .sign_button {
+            border-radius: 5px;
+            border: 1px solid rgb(107, 100, 209);
+            background-color: rgb(84, 84, 225);
+            color: white;
+            padding: 3px 10px;
+        }
+
+        .sign_button:hover {
+            background-color: white;
+            color: blue;
+            border: 1px solid white;
+        }
+
+        .links {
+            color: rgb(180, 174, 174);
+        }
+
+        .links:hover {
+            font-weight: bold;
+            color: rgb(255, 255, 255);
+        }
+
+        .column {
+            color: white;
+            margin: 0px 10px;
+        }
+
+        .lightfont {
+            font-weight: bold;
+            color: rgb(166, 163, 163);
+        }
+
+        #next_status {
+            background-color: rgba(0, 0, 0, 0);
+            border-radius: 10px;
+            color: white;
+            border: 1px solid white;
+            font-size: 12px;
+            padding: 10px;
+        }
+
+        #next_status:hover {
+            background-color: white;
+            color: black;
+        }
+    </style>
+</head>
+
+<div style="display: flex;justify-content: center;align-items: center;height: 100vh;">
+    <div
+        style="border:1px solid rgb(124, 122, 122);padding: 40px;background-color: rgba(255, 255, 255, 0.7);border-radius: 10px;color: rgb(0, 0, 0);width: 40%;">
+        <h3 style="color: rgb(0, 0, 0);margin: 0px;">Manage Coupon</h3>
+        <p>see the details of available coupons</p>
+        <div id="message" style="color: rgb(231, 6, 6);font-size: 12px;"></div>
+        <div style="margin-top: 10px;display: flex;justify-content: space-between;">
+            <p class="column" style="font-weight: bold;">Coupon</p>
+            <p class="column" style="font-weight: bold;text-align: center;">Discount</p>
+            <p class="column" style="font-weight: bold;">Controls</p>
+        </div>
+        {% for coupon in coupons %}
+        <div style="display: flex;justify-content: space-between;">
+            <div>
+                <div id="coupon"
+                    style="color:rgb(0, 0, 0);width: 200px;background-color: rgba(0,0,0,0);border-radius: 5px;border:1px solid rgb(0, 0, 0);padding: 5px 10px;margin: 5px; ">
+                    {{coupon.coupon}}</div>
+            </div>
+            <div>
+                <div id="coupon_discount"
+                    style="color:rgb(0, 0, 0);width: 200px;background-color: rgba(0,0,0,0);border-radius: 5px;border:1px solid rgb(0, 0, 0);padding: 5px 10px;margin: 5px;"
+                    type="number"> {{coupon.discount_percentage}}</div>
+            </div>
+            <input onclick="user_confirm('{{coupon.id}}','remove')" type="button"
+                style="color:rgb(0, 0, 0);padding: 1px 10px;color:rgb(234, 230, 230);height: fit-content;margin: 5px;padding: 5px 10px;background-color: rgb(143, 34, 34);border: 1px solid white;border-radius: 5px;"
+                value="remove">
+        </div>
+        <hr style="margin:10px;">
+        {% endfor %}
+        <input onclick="add_coupon_control()" type="button"
+            style="padding: 1px 10px;color:rgb(234, 230, 230);height: fit-content;margin: 5px;padding: 5px 10px;background-color: rgb(5, 94, 29);border: 1px solid white;border-radius: 5px;"
+            value="Add +">
+        <div style="display: flex;justify-content: space-between;display:none ;" id="add_coupon_tab">
+            <div>
+                <input id="new_coupon" placeholder="coupon code"
+                    style="color:rgb(11, 10, 10);width: 200px;background-color: rgba(255, 227, 227, 0);border-radius: 5px;border:1px solid rgb(0, 0, 0);padding: 5px 10px;margin: 5px; "
+                    type="text">
+            </div>
+            <div>
+                <input id="new_coupon_discount" placeholder="coupon discount"
+                    style="color:rgb(0, 0, 0);width: 200px;background-color: rgba(0,0,0,0);border-radius: 5px;border:1px solid rgb(0, 0, 0);padding: 5px 10px;margin: 5px;"
+                    type="number" min="0" max="30">
+            </div>
+            <input onclick="user_confirm()" type="button"
+                style="padding: 1px 10px;color:rgb(255, 255, 255);height: fit-content;margin: 5px;padding: 5px 10px;background-color: rgb(0, 115, 210);border: 1px solid rgb(16, 14, 14);border-radius: 5px;"
+                min="0" max="100" value="Add">
+        </div>
+        <div id="message" style="color: red;font-weight: bold;display: inline-block;"></div>
+    </div>
+</div>
+<script>
+
+    function user_confirm(id,task) {
+        if(task == 'remove'){
+            callback_func = remove_coupon
+            message = 'The coupon will be removed permanently.Are you sure?'
+        }
+        else{
+            callback_func = add_coupon
+            message = 'Are you sure to add the coupon?.'
+        }
+        Swal.fire({
+            title: message,
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonText: 'yes',
+            cancelButtonText: 'Go back',
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            // console.log(result)
+            if (result.value == true) {
+                callback_func(id)
+            }
+        })
+       
+    }
+
+
+    function remove_coupon(coupon_id) {
+        
+            $.ajaxSetup({
+                data: { csrfmiddlewaretoken: '{{ csrf_token }}' }
+            })
+            $.ajax({
+                url: '/admin_remove_coupon',
+                method: 'post',
+                data: { 'coupon_id': coupon_id },
+                success: function (response) {
+                    resp = response['status']
+                    window.location.reload()
+                }
+            })
+        }
+
+    
+
+    function add_coupon_control() {
+        document.getElementById('add_coupon_tab').style.display = 'flex'
+    }
+
+    function add_coupon() {
+        new_coupon = document.getElementById('new_coupon').value
+        new_coupon_discount = document.getElementById('new_coupon_discount').value
+        if (new_coupon.length > 0 && new_coupon_discount.length > 0 && (parseInt(new_coupon_discount) > 0 && parseInt(new_coupon_discount) < 30)) {
+            document.getElementById('message').innerText = ''
+
+
+            $.ajaxSetup({
+                data: { csrfmiddlewaretoken: '{{ csrf_token }}' }
+            })
+            $.ajax({
+                url: '/admin_add_coupon',
+                method: 'post',
+                data: { 'new_coupon': new_coupon, 'new_coupon_discount': new_coupon_discount },
+                success: function (response) {
+                    resp = response['status']
+                    if (resp == 'success') {
+                        console.log('coupon added succefully')
+                        window.location.reload()
+                        // message.innerHTML = 'user not found'
+                    }
+                }
+            })
+        }
+
+        else {
+            document.getElementById('message').innerText = '* The coupon field or the discount field cannot be empty.\n* discount must be in between 0 and 30'
+        }
+    }
+
+</script>
+
+{% endblock %}

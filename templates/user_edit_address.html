@@ -1,0 +1,76 @@
+{% extends 'user_base.html' %}
+{% block content %}
+<head>
+    <style>
+        .address{
+            display: flex;
+            justify-content: center;
+            
+        }
+    </style>
+</head>
+
+    <main class="main">
+       
+        <nav aria-label="breadcrumb" class="breadcrumb-nav">
+    
+        </nav><!-- End .breadcrumb-nav -->
+
+        <div class="page-content">
+            <div class="address">
+
+                    <form action="/user_edit_address/{{address_prefill.id}}" method="POST" style="border: 1px solid black;padding:20px;background-color: rgb(8, 8, 48); color: white;">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-lg-12" id="new_address">
+                                <h2 class="checkout-title" style="color: white;">update Address</h2><!-- End .checkout-title -->
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <label>First Name</label>
+                                        <input class="form-control" name="first_name" required type="text" value="{{address_prefill.first_name}}">
+                                    </div><!-- End .col-sm-6 -->
+
+                                    <div class="col-sm-6">
+                                        <label>Last Name</label>
+                                        <input class="form-control" name="last_name" required type="text" value="{{address_prefill.last_name}}">
+                                    </div><!-- End .col-sm-6 -->
+                                </div><!-- End .row -->
+
+                                <label>Building Name</label>
+                                <input class="form-control" name="building_name" type="text" required value="{{address_prefill.building_name}}">
+
+                                <label>Street</label>
+                                <input class="form-control" required type="text" name="street" value="{{address_prefill.street}}">
+
+                                <label>City</label>
+                                <input class="form-control" name="city" placeholder="city  name" required
+                                       type="text" value="{{address_prefill.city}}">
+
+                                <input class="form-control" name="state" placeholder="state  name, suite, unit etc ..."
+                                       required type="text" value="{{address_prefill.state}}">
+
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <label>Pincode </label>
+                                        <input class="form-control" name="pincode" required type="number" value="{{address_prefill.pincode}}">
+                                    </div><!-- End .col-sm-6 -->
+
+                                    <div class="col-sm-6">
+                                        <label>Contact </label>
+                                        <input class="form-control" name="contact" required type="number" value="{{address_prefill.contact}}">
+                                    </div><!-- End .col-sm-6 -->
+                                </div><!-- End .row -->
+
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <label>Alternative Contact</label>
+                                        <input class="form-control" name="alt_contact" required type="number" value="{{address_prefill.alt_contact}}">
+                                    </div><!-- End .col-sm-6 -->
+                                    
+                                   
+                                </div><!-- End .custom-checkbox -->
+                                <input type="submit" style="width: 100%;background-color: rgb(0, 145, 255);color: white;">
+                            </div><!-- End .col-lg-9 -->
+                        </div>
+                    </form>
+{% endblock %}

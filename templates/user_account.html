@@ -1,0 +1,589 @@
+{% extends 'user_base.html' %}
+{% block content %}
+{% load static %}
+
+<head>
+	<style>
+		.color {
+			color: rgb(0, 0, 0);
+		}
+
+		.address_data {
+			margin: 0px;
+			font-weight: normal;
+			color: white;
+			padding: 0px;
+		}
+
+		.color:hover {
+			color: brown;
+		}
+
+		.ap {
+			font-size: 13px;
+			font-weight: bold;
+			color: rgb(0, 0, 0);
+			width: 120px;
+			text-align: center;
+		}
+
+		.at {
+			font-size: 16px;
+			color: rgb(0, 0, 0);
+			margin: 20px;
+			font-weight: bold;
+			text-transform: uppercase;
+		}
+
+		.user {
+			font-weight: bold;
+			background-color: rgb(255, 255, 255);
+			color: rgb(0, 0, 0);
+			margin: 0px;
+			padding: 0px 10px;
+			cursor: pointer;
+			background-color: rgb(3, 184, 255);
+			color: rgb(255, 255, 255);
+			font-weight: normal;
+			border-radius: 10px;
+			text-decoration: none;
+		}
+
+		.user:hover {
+			background-color: rgb(27, 87, 111);
+
+		}
+
+		.cancel {
+			background-color: rgb(255, 255, 255);
+			padding: 10px 10px;
+			cursor: pointer;
+			border-radius: 10px;
+			border: 1px solid gray;
+			height: 40px;
+		}
+
+		.return {
+			background-color: rgb(255, 255, 255);
+			padding: 10px 10px;
+			cursor: not-allowed;
+			border-radius: 10px;
+			border: 1px solid gray;
+			height: 40px;
+		}
+
+		.delivered {
+			background-color: rgb(255, 255, 255);
+			padding: 10px 10px;
+			cursor: pointer;
+			border-radius: 10px;
+			border: 1px solid gray;
+			height: 40px;
+		}
+
+		.delivered:hover {
+			background-color: rgb(120, 221, 120);
+		}
+
+		.cancel:hover {
+			background-color: rgb(255, 0, 0);
+
+		}
+
+		.dowload_button {
+			background-color: rgb(255, 255, 255);
+			padding: 10px 10px;
+			cursor: pointer;
+			border-radius: 10px;
+			border: 1px solid gray;
+			height: 40px;
+		}
+
+		.delivered_no_return {
+			background-color: rgb(255, 255, 255);
+			padding: 10px 10px;
+			cursor: not-allowed;
+			border-radius: 10px;
+			border: 1px solid gray;
+			height: 40px;
+		}
+
+		.dowload_button:hover {
+			background-color: #00d9ff;
+		}
+
+		.heading {
+			background-color: rgb(7, 2, 13);
+		}
+		.space:hover{
+			box-shadow: 0px 5px 5px 0px;
+		}
+	</style>
+
+</head>
+
+<div class="page-content">
+	<div class="dashboard">
+		<div class="container">
+			<div class="row">
+				<!-- left side -->
+				<br>
+				<aside class="col-md-4 col-lg-3">
+					<ul class="nav nav-dashboard flex-column mb-3 mb-md-0" role="tablist">
+						<li class="nav-item" style="margin-top:20px ;">
+							<a id="tab-dashboard-link" data-toggle="tab" href="#tab-dashboard" role="tab"
+								aria-controls="tab-dashboard" aria-selected="true" class="color">Dashboard</a>
+						</li>
+						<li class="nav-item">
+							<a id="tab-orders-link" data-toggle="tab" href="#tab-orders" role="tab"
+								aria-controls="tab-orders" aria-selected="false" class="color">Orders</a>
+						</li>
+						<li class="nav-item">
+							<a id="tab-downloads-link" data-toggle="tab" href="#tab-reset_password" role="tab"
+								aria-controls="tab-downloads" aria-selected="false" class="color">Reset Password</a>
+						</li>
+						<li class="nav-item">
+							<a id="tab-address-link" data-toggle="tab" href="#tab-address" role="tab"
+								aria-controls="tab-address" aria-selected="false" class="color">Adresses</a>
+						</li>
+
+						<li class="nav-item">
+							<a id="tab-account-link" data-toggle="tab" href="#tab-referal" role="tab"
+								aria-controls="tab-account" aria-selected="false" class="color">
+								Get my Referal link</a>
+						</li>
+						<li class="nav-item">
+							<a href="/user_sign_out" class="color">Sign Out</a>
+						</li>
+					</ul>
+				</aside>
+				<!-- End .col-lg-3 -->
+				<div class="col-md-8 col-lg-9">
+					<div class="tab-content">
+						<!--   user details  and dashboard     -->
+						<div class="tab-pane fade show active" id="tab-dashboard" role="tabpanel"
+							aria-labelledby="tab-dashboard-link">
+							<div style="display: flex;justify-content: center;" id="profile_image">
+								<div
+									style="border-radius: 50%;background-color: rgb(192, 192, 192);width: 10vw;height: 10vw;align-items: center;display: flex;overflow: hidden;margin: 10px;">
+									<img src="/media/{{user.profile_image}}">
+								</div>
+							</div>
+							<div style="display:flex;align-items:center;justify-content: center;">
+								<div style=" width: 100%;">
+									<div id="view_user">
+										<div style="text-align: center;" id="button_edit"><a href="#" class="user"
+												style="color: white;padding: 5px 10px;">Update</a></div>
+										<div style="text-align: center;font-size: 25px;" id="full_name_view">
+											{{user.full_name}}</div>
+										<div style="text-align: center;">{{user.email}}</div>
+										<div style="text-align: center;" id="contact_number_view">Contact :
+											{{user.contact_number}}</div>
+									</div>
+									<form id="edit_user" style="display: none; width: 100%;" method="post"
+										action="/user_update_user/{{user.id}}" enctype="multipart/form-data">
+										{% csrf_token %}
+										<input type="submit" onclick="return permission()"
+											style="background-color: rgb(3, 184, 255); border: none;border-radius: 10px;color: white;"
+											value="Change">
+										<input type="file" id="profile_image_edit" style="margin: 10px;"
+											name="profile_image">
+										<div style="display: flex;justify-content: space-between;margin: 10px;">
+											<label>FULL NAME</label>
+											<input type="text" value="{{user.full_name}}" id="full_name_edit"
+												style="padding: 2px 10px;border-radius: 10px;" name="user_full_name">
+										</div>
+										<div style="display: flex;justify-content: space-between;margin: 10px;">
+											<label>CONTACT NUMBER</label>
+											<input type="text" value="{{user.contact_number}}" id="contact_number_edit"
+												style="padding: 2px 10px;border-radius: 10px;"
+												name="user_contact_number">
+
+										</div>
+									</form>
+								</div>
+							</div>
+							<script>
+								full_name_view = document.getElementById('full_name_view')
+								full_name_edit = document.getElementById('full_name_edit')
+								contact_number_view = document.getElementById('contact_number_view')
+								contact_number_edit = document.getElementById('contact_number_edit')
+								button_edit = document.getElementById('button_edit')
+								button_update = document.getElementById('button_update')
+								edit_user = document.getElementById('edit_user')
+								profile_image = document.getElementById('profile_image')
+								console.log(full_name_edit.value)
+								console.log(contact_number_edit.value)
+								button_edit.addEventListener('click', function () {
+									console.log('clicked edit')
+									view_user.style.display = 'none';
+									edit_user.style.display = 'block';
+								})
+								button_update.addEventListener('click', function () {
+									view_user.style.display = 'block';
+									edit_user.style.display = 'none';
+								})
+							</script>
+						</div><!-- .End .tab-pane -->
+						<!--   user details  and dashboard     -->
+						<div class="tab-pane fade show " id="tab-referal" role="tabpanel"
+							aria-labelledby="tab-dashboard-link">
+							<div style="display:flex;align-items:center;justify-content: space-between;">
+								<div>
+									<div class="user">REFERAL LINK</div>
+								</div>
+								<div>
+									<input type="text" style="border-radius: 10px;padding: 0px 10px;"
+										value="{{user.reference_id}}" readonly>
+								</div>
+							</div>
+							<div style="display:flex;align-items:center;">
+								<label>People who have signed up using your referal link</label>
+								{% for people in refered_people_details %}
+								<label>{{people.refered_user_id}}</label>
+								{% endfor %}
+							</div>
+						</div><!-- .End .tab-pane -->
+						<div class="tab-pane fade show " id="tab-reset_password" role="tabpanel"
+							aria-labelledby="tab-dashboard-link">
+							<div style="width: 50vw;">
+								<div style="margin: 10px;justify-content: space-between;display: flex;">
+									<label>Old Password</label>
+									<input type="text" id="old_pass"
+										style="border-radius: 10px;padding:0px 10px;background-color: rgb(255, 247, 247);color:rgb(0, 0, 0)">
+								</div>
+								<div style="margin: 10px;justify-content: space-between;display: flex;">
+									<label>New Password</label>
+									<input type="password" id="new_pass"
+										style="border-radius: 10px;padding:0px 10px;background-color: rgb(255, 247, 247);color:rgb(5, 4, 4)">
+								</div>
+								<div style="margin: 10px;justify-content: space-between;display: flex;">
+									<label>Re-Enter Password</label>
+									<input type="password" id="re_new_pass"
+										style="border-radius: 10px;padding:0px 10px;background-color: rgb(255, 247, 247);color:rgb(0, 0, 0)">
+								</div>
+								<button onclick="confirm_reset()" style="border-radius: 5px;" id="reset_password"
+									onmouseover="document.getElementById('reset_password').style.backgroundColor = 'rgb(0, 213, 255)';document.getElementById('reset_password').style.color = 'white'"
+									onmouseout="document.getElementById('reset_password').style.backgroundColor = 'white';document.getElementById('reset_password').style.color = 'black'">Reset</button>
+							</div>
+						</div><!-- .End .tab-pane -->
+						<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+						<script>
+							function confirm_reset() {
+								new_pass = document.getElementById('new_pass').value
+								re_new_pass = document.getElementById('re_new_pass').value
+								console.log(new_pass)
+								if (new_pass == re_new_pass) {
+									// window.location.href = '/user_reset_password'
+									Swal.fire({
+												title: 'Are you sure? ',
+												showDenyButton: true,
+												showCancelButton: true,
+												confirmButtonText: 'yes',
+												cancelButtonText: 'Go back',
+												}).then((result) => {
+													if(result.value == true){
+													$.ajaxSetup({
+														data: { csrfmiddlewaretoken: '{{ csrf_token }}' }
+													})
+
+													$.ajax({
+														url: '/user_reset_password',
+														data: { 'new_pass': new_pass },
+														method: 'post',
+														success: function (response) {
+															window.location.href = '/user_account';
+														}
+													});
+												}
+												})}}
+								
+
+							
+						</script>
+
+						<!--###   my orders   ##############################################################################################################################-->
+
+						<section class="tab-pane fade section" id="tab-orders" role="tabpanel" aria-labelledby="tab-orders-link"
+							style="background-color:rgb(255, 255, 255) ;padding:5px;border-radius:10px;">
+							<table>
+
+
+								<hr style="color: rgb(46, 44, 44);">
+								{% for order in orders %}
+								<div class="space" style="display: flex;align-items: center;border: 1px solid rgb(144, 142, 142);margin: 10px;border-radius: 20px;">
+									<div style="width: 30% ;padding: 2%;">
+										<a href="/user_product_detail/{{order.product.id}}"><img
+												src="media/{{order.product.image_1}}" width="100%;" style="border-radius: 20px;"></a>
+									</div>
+									<div style="width: 70%;">
+										<div style="font-size: 20;font-weight: bold;">{{order.product.name}}</div>
+										<div>Rs. {{order.product.price}}</div>
+										<div>Ordered on {{order.Order_day}}/{{order.Order_month}}/{{order.Order_year}}</div>
+										<label>Order Status - {{order.status}}</label>
+										
+
+										<div style="display: flex;align-items: center;">
+											{% if order.status == 'ordered' %}
+											<div onclick="cancel_order('{{order.id}}')" data-bs-toggle="tooltip"
+												data-bs-placement="top" type="button" title="Cancel the Order"
+												style="height: 40px;">
+												<div class="cancel" id="order_status"><img src="/media/icons/cancel.png"
+														width="20px"></div>
+											</div>
+											{% elif order.status == 'shipped' %}
+											<div onclick="cancel_order('{{order.id}}')" data-bs-toggle="tooltip"
+												data-bs-placement="top" type="button" title="Cancel the Order"
+												style="height: 40px;">
+												<p class="cancel" id="order_status"><img src="/media/icons/cancel.png"
+														width="20px"></p>
+											</div>
+											{% elif order.status == 'delivered' %}
+											<div onclick="return_order('{{order.id}}')" data-bs-toggle="tooltip"
+												data-bs-placement="top" type="button" title="Request Return"
+												style="height: 40px;">
+												<p class="delivered" id="order_status"><img
+														src="/media/icons/return.png" width="20px"></p>
+											</div>
+											{% elif order.status == 'delivered_no_return' %}
+											<div data-bs-toggle="tooltip" data-bs-placement="top" type="button"
+												title="Return not available" style="height: 20px;">
+												<p class="delivered_no_return" id="order_status"><img
+														src="/media/icons/delivered.webp" width="20px"></p>
+											</div>
+											{% elif order.status == 'return requested' %}
+											<div onclick="return_order('{{order.id}}')" data-bs-toggle="tooltip"
+												data-bs-placement="top" type="button"
+												title="Waiting to Accept Return Request" style="height: 40px;">
+												<p class="return" id="order_status"><img src="/media/icons/waiting.jpg"
+														width="20%"></p>
+											</div>
+											{% else %}
+											<div data-bs-toggle="tooltip" data-bs-placement="top" type="button"
+												title="You have canceled the order" style="height: 40px;">
+												<p class="return" id="order_status"><img src="/media/icons/canceled.jpg"
+														width="20px" style="width: 20px;"></p>
+											</div>
+											{% endif %}
+											<a href="user_invoice_per_item/{{order.id}}"  style="margin: 20px;">
+												<div class="dowload_button"><img src="/media/icons/download_icon.png"
+														width="20px"></div>
+											</a>
+										</div>
+										<!-- <hr style="background-color: rgb(183, 179, 179);margin: 1px;height: 1px;"> -->
+									</div>
+								</div>
+
+								{% endfor %}
+							</table>
+							<a href="/" class="btn delivered" data-bs-toggle="tooltip" data-bs-placement="top"
+								type="button" title="go for shopping"><span>GO
+									SHOP</span><i class="icon-long-arrow-right"></i></a>
+							 <a href="/user_invoice" class="btn delivered" data-bs-toggle="tooltip"
+								data-bs-placement="top" type="button"
+								title="CLick to download the ordered product details as pdf"><span>Download
+									as PDF
+									Copy</span><i class="icon-long-arrow-right"></i></a>
+							<a href="/user_export_myorders_in_csv" class="btn delivered" data-bs-toggle="tooltip"
+								data-bs-placement="top" type="button"
+								title="CLick to download the ordered product details as csv"><span>Download
+									as CSV
+									Copy</span><i class="icon-long-arrow-right"></i></a> 
+						</section><!-- .End .tab-pane -->
+
+
+
+
+						<!--   #########################   handling user addresses    #############################################################3-->
+
+						<div class="tab-pane fade" id="tab-address" role="tabpanel" aria-labelledby="tab-address-link">
+							<p>The following addresses will be used on the checkout page by default.</p>
+
+							<div class="row">
+								<h3 class="card-title" style="color:rgb(10, 10, 10) ;">Billing Address</h3>
+								{% for each in address %}
+								<div class="col-lg-12">
+
+									<div class="card card-dashboard"
+										style="border:1px solid rgb(242, 242, 242) ;margin: 10px;border-radius: 10px;background-color: rgb(15, 6, 33);box-shadow: 0px 20px 20px;">
+										<div class="card-body" style="display: flex;justify-content: space-between;">
+
+											<!-- End .card-title -->
+											<div>
+												<div class="address_data">{{each.email}}</div>
+												<div class="address_data">{{each.first_name}}</div>
+												<div class="address_data">{{each.last_name }}</div>
+												<div class="address_data">{{each.building_name }}</div>
+												<div class="address_data">{{each.street }}</div>
+												<div class="address_data">{{each.city }}</div>
+												<div class="address_data">{{each.state }}</div>
+												<div class="address_data">{{each.pincode }}</div>
+												<div class="address_data">{{each.contact }}</div>
+												<div class="address_data">{{each.alt_contact }}</div>
+											</div>
+											<div style="display: flex;color:white">
+												<a href="user_edit_address/{{each.id}}"
+													style="cursor:pointer; background-color:green;padding:5px;border-radius: 3px;margin: 3px;height: fit-content;">Edit
+													<i class="icon-edit"></i></a>
+												<div onclick="delete_address('{{each.id}}')"
+													style="cursor:pointer;background-color: rgb(168, 77, 12);padding:5px;margin:3px;border-radius: 3px;height: fit-content;">
+													Delete <i class="icon-edit"></i></div>
+											</div>
+
+										</div><!-- End .card-body -->
+									</div><!-- End .card-dashboard -->
+								</div><!-- End .col-lg-6 -->
+								{% endfor %}
+								<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+								<script>
+									function delete_address(address_id) {
+
+										Swal.fire({
+												title: 'Are you sure? ',
+												showDenyButton: true,
+												showCancelButton: true,
+												confirmButtonText: 'yes',
+												cancelButtonText: 'Go back',
+												}).then((result) => {
+												/* Read more about isConfirmed, isDenied below */
+												// console.log(result)
+												if(result.value == true){
+													$.ajaxSetup({
+													data: { 'csrfmiddlewaretoken': '{{csrf_token}}' },
+													});
+
+
+													$.ajax({
+													url: '/user_delete_address',
+													method: 'post',
+													data: { 'address_id': address_id },
+													success: function (response) {
+													console.log('address updated, reloading the page')
+													window.location.reload()
+													}
+													});
+
+										
+												}})}
+
+								</script>
+							</div><!-- End .row -->
+						</div><!-- .End .tab-pane -->
+
+						<!-- account details -->
+						<div class="tab-pane fade" id="tab-account" role="tabpanel" aria-labelledby="tab-account-link">
+							<form action="#">
+								<div class="row">
+									<div class="col-sm-6">
+										<label>First Name *</label>
+										<input type="text" class="form-control" required>
+									</div><!-- End .col-sm-6 -->
+
+									<div class="col-sm-6">
+										<label>Last Name *</label>
+										<input type="text" class="form-control" required>
+									</div><!-- End .col-sm-6 -->
+								</div><!-- End .row -->
+
+								<label>Display Name *</label>
+								<input type="text" class="form-control" required>
+								<small class="form-text">This will be how your name will be displayed in the
+									account section and in reviews</small>
+
+								<label>Email address *</label>
+								<input type="email" class="form-control" required>
+
+								<label>Current password (leave blank to leave unchanged)</label>
+								<input type="password" class="form-control">
+
+								<label>New password (leave blank to leave unchanged)</label>
+								<input type="password" class="form-control">
+
+								<label>Confirm new password</label>
+								<input type="password" class="form-control mb-2">
+
+								<button type="submit" class="btn btn-outline-primary-2">
+									<span>SAVE CHANGES</span>
+									<i class="icon-long-arrow-right"></i>
+								</button>
+							</form>
+						</div><!-- .End .tab-pane -->
+					</div>
+				</div><!-- End .col-lg-9 -->
+			</div><!-- End .row -->
+		</div><!-- End .container -->
+	</div><!-- End .dashboard -->
+</div><!-- End .page-content -->
+</main><!-- End .main -->
+
+<script>
+$(document).ready(function(){
+	console.log('i am ready to rock')
+	document.getElementById('tab-orders').scrollIntoView({behavior: 'smooth'}, true);
+	console.log('you are in exact locati')
+})
+	function return_order(order_id) {
+		console.log(order_id)
+		window.location.href = '/user_return_order/' + order_id
+	}
+</script>
+
+<!-- handles the alerts  -->
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+	function  cancel_order(order_id){
+	  var status = false
+		  Swal.fire({
+			  title: 'Are you sure? ',
+			  showDenyButton: true,
+			  showCancelButton: true,
+			  confirmButtonText: 'yes',
+			  cancelButtonText: 'Go back',
+			  }).then((result) => {
+			  /* Read more about isConfirmed, isDenied below */
+			  // console.log(result)
+			  if(result.value == true){
+					$.ajaxSetup({
+					data: { csrfmiddlewaretoken: '{{ csrf_token }}' }
+					})
+
+					$.ajax({
+					url: '/user_update_order_status',
+					data: { 'order_id': order_id, 'order_status': 'canceled' ,'navigate':'tab-orders'},
+					method: 'POST',
+					success: function (response) {
+					if (response['status'] == 'canceled') {
+					window.location.href='/user_account';
+
+					}
+					}
+					});
+			  }
+		  })
+		  return false
+	  }
+
+	function  permission(){
+		var status = false
+			Swal.fire({
+				title: 'Are you sure? ',
+				showDenyButton: true,
+				showCancelButton: true,
+				confirmButtonText: 'yes',
+				cancelButtonText: 'Go back',
+				}).then((result) => {
+				/* Read more about isConfirmed, isDenied below */
+				// console.log(result)
+				if(result.value == true){
+				$('#edit_user').submit()
+				}
+			})
+			return false
+		}
+
+  </script>
+
+{% endblock %}

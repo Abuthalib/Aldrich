@@ -1,0 +1,99 @@
+{% extends 'admin_base.html' %}
+{% block content %}
+
+  <!-- ======= Sidebar ======= -->
+<head>
+  <style>
+    .edit{
+      background-color:rgb(15, 15, 198);
+      text-align:center;
+      color:rgb(255, 255, 255);
+      border-radius:5px;
+      padding:3px 10px;
+      font-size:13px;
+      border:none;
+      margin:3px;
+    }
+    .edit:hover{
+      background-color: rgb(16, 96, 207);
+    }
+    .delete{
+      background-color:rgb(162, 29, 29);
+      text-align:center;
+      color:white;
+      border-radius:5px;
+      padding:3px 10px;
+      font-size:13px;
+      border:none;margin:3px;
+    }
+    .delete:hover{
+      background-color: rgb(255, 0, 0);
+    }
+  </style>
+</head>
+
+  <main id="main" class="main">
+    <div class="pagetitle">
+      <h1 style="color: rgb(0, 0, 0);">Manage Product</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item">Tables</li>
+          <li class="breadcrumb-item active">General</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+    <section class="section">
+          <div>
+            <div >
+              <h5 class="card-title" style="color: rgb(0, 0, 0);">Your Products</h5>
+<!--////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
+              <!-- Default Table -->
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="font-size:13px;color: rgb(0, 0, 0);" scope="col">ID</th>
+                    <th style="font-size:13px;color: rgb(0, 0, 0);" scope="col">NAME</th>
+                    <th style="font-size:13px;color: rgb(0, 0, 0);" scope="col">PRICE</th>
+                    <th style="font-size:13px;color: rgb(0, 0, 0);" scope="col">CATEGORY</th>
+                    <th style="font-size:13px;color: rgb(0, 0, 0);" scope="col">DESCRIPTION</th>
+                    <th style="font-size:13px;color: rgb(0, 0, 0);" scope="col">RATING</th>
+                    <th style="font-size:13px;color: rgb(0, 0, 0);" scope="col">SOLD</th>
+                    <th style="font-size:13px;color: rgb(0, 0, 0);" scope="col">STATUS</th>
+                  </tr>
+                </thead>
+<!--                /////////////////////////////////////////////////////////////////////////////-->
+                <tbody>
+              {% for product in products %}
+                  <tr>
+                    <td style="font-size:13px"><img src="media/{{product.image_1}}" width="50px"></td>
+                    <td style="font-size:13px;color: rgb(0, 0, 0);">{{product.name}}</td>
+                    <td style="font-size:13px;color: rgb(0, 0, 0);">{{product.price}}</td>
+                    <td style="font-size:13px;color: rgb(0, 0, 0);">{{product.category}}</td>
+                    <td style="font-size:13px;color: rgb(0, 0, 0);">{{product.description}}</td>
+                    <td style="font-size:13px;color: rgb(0, 0, 0);">{{product.rating}}</td>
+                    <td style="font-size:13px;color: rgb(0, 0, 0);">{{product.total_sold}}</td>
+                    <td style="font-size:13px;color: rgb(0, 0, 0);">{{product.available_status}}</td>
+                    <td style="display:flex;">
+                      <form action="/admin_edit_Product" >
+                      <button name="action" type="submit" onclick="return confirm('Be careful while you edit, Are you sure you want to do this?')" value="edit" class="edit">
+                        Edit
+                      </button>
+                      <button name="action" type="submit"  onclick="return confirm('Are you sure to delete this product?')" value="delete" class="delete">
+                        Delete
+                      </button>
+                      <input name = 'product_id'   value="{{product.id}}" style="display: none;">
+                      </form>
+                    </td>
+                  </tr>
+               {% endfor %}
+
+                </tbody>
+              </table>
+        </div>
+      </div>
+    </section>
+
+  </main><!-- End #main -->
+
+{%endblock%}

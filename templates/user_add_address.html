@@ -1,0 +1,138 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+
+<!-- molla"/checkout".html  22 Nov 2019 09:55:06 GMT -->
+<!-- molla/cart.html  22 Nov 2019 09:55:06 GMT -->
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <title>Molla - Bootstrap eCommerce Template</title>
+    <meta content="HTML5 Template" name="keywords">
+    <meta content="Molla - Bootstrap eCommerce Template" name="description">
+    <meta content="p-themes" name="author">
+    <!-- Favicon -->
+    <link href="{% static 'assets/images/icons/apple-touch-icon.png' %}" rel="apple-touch-icon" sizes="180x180">
+    <link href="{% static 'assets/images/icons/favicon-32x32.png' %}" rel="icon" sizes="32x32" type="image/png">
+    <link href="{% static 'assets/images/icons/favicon-16x16.png' %}" rel="icon" sizes="16x16" type="image/png">
+    <link href="{% static 'assets/images/icons/site.html' %}" rel="manifest">
+    <link color="#666666" href="{% static 'assets/images/icons/safari-pinned-tab.svg' %}" rel="mask-icon">
+    <link href="{% static 'assets/images/icons/favicon.ico' %}" rel="shortcut icon">
+    <meta content="Molla" name="apple-mobile-web-app-title">
+    <meta content="Molla" name="application-name">
+    <meta content="#cc9966" name="msapplication-TileColor">
+    <meta content="{% static 'assets/images/icons/browserconfig.xml' %}" name="msapplication-config">
+    <meta content="#ffffff" name="theme-color">
+    <link href="{% static 'assets/vendor/line-awesome/line-awesome/line-awesome/css/line-awesome.min.css' %}"
+          rel="stylesheet">
+    <!-- Plugins CSS File -->
+    <link href="{% static 'assets/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/css/plugins/owl-carousel/owl.carousel.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/css/plugins/magnific-popup/magnific-popup.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/css/plugins/jquery.countdown.css' %}" rel="stylesheet">
+    <!-- Main CSS File -->
+    <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/css/skins/skin-demo-2.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/css/demos/demo-2.css' %}" rel="stylesheet">
+
+    <style>
+        .input{
+            color: rgb(4, 2, 2);
+            background-color: rgba(255, 252, 252);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="page-wrapper" style="background-color: white;
+background-attachment: fixed;">
+ 
+    <main class="main" >
+        <div style="background-color: rgba(0, 176, 246, 0.7);padding:10px;">
+            <div >
+                <h4>Add Delivery Address</h4>
+            </div><!-- End .container -->
+        </div><!-- End .page-header -->
+        <nav aria-label="breadcrumb" class="breadcrumb-nav" >
+            <div class="container">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                    <li class="breadcrumb-item"><a href="#">Shop</a></li>
+                    <li aria-current="page" class="breadcrumb-item active">Checkout</li>
+                </ol>
+            </div><!-- End .container -->
+        </nav><!-- End .breadcrumb-nav -->
+
+        <div class="page-content">
+            <div class="/checkout" style="display: flex;justify-content: center;">
+
+                    <form action="/user_add_address" method="POST" style="padding: 100px;background-color: rgba(2, 96, 238, 0.5);display: flex;justify-content: center;border:1px solid rgb(255, 255, 255);border-radius: 10px;">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-lg-12" id="new_address">
+                                <h2 class="checkout-title" style="color: white;">Add New Address</h2><!-- End .checkout-title -->
+                                <div class="row " >
+                                    <div class="col-sm-6">
+                                        <label style="color: white;">First Name</label>
+                                        <input class="form-control input" name="first_name" required type="text">
+                                    </div><!-- End .col-sm-6 -->
+
+                                    <div class="col-sm-6">
+                                        <label style="color: white;">Last Name</label>
+                                        <input  class="form-control input" name="last_name" required type="text">
+                                    </div><!-- End .col-sm-6 -->
+                                </div><!-- End .row -->
+
+                                <label style="color: white;">Building Name</label>
+                                <input class="form-control input" name="building_name" type="text" required>
+
+                                <label style="color: rgb(243, 215, 215);">Street</label>
+                                <input  class="form-control input" required type="text" name="street">
+
+                                <label style="color: rgb(255, 255, 255)">City</label>
+                                <input  class="form-control input" name="city" placeholder="city  name" required
+                                       type="text">
+
+                                <input class="form-control input" name="state" placeholder="state  name, suite, unit etc ..."
+                                       required type="text">
+
+                                <div class="row ">
+                                    <div  class="col-sm-6">
+                                        <label style="color: white;">Pincode </label>
+                                        <input class="form-control input" name="pincode" required type="number">
+                                    </div><!-- End .col-sm-6 -->
+
+                                    <div class="col-sm-6">
+                                        <label style="color: rgb(255, 255, 255);">Contact </label>
+                                        <input class="form-control input" name="contact" required type="number">
+                                    </div><!-- End .col-sm-6 -->
+                                </div><!-- End .row -->
+
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <label style="color: white;">Alternative Contact</label>
+                                        <input  class="form-control input" name="alt_contact" required type="number">
+                                    </div><!-- End .col-sm-6 -->
+                                    
+                                    <input type="submit" style="background-color: rgb(8, 157, 221);border-radius: 10px;color:white;border:none;">
+                                </div><!-- End .custom-checkbox -->
+                            </div><!-- End .col-lg-9 -->
+                        </div>
+                    </form>
+                    </div></div>
+<script src="{% static 'assets/js/jquery.min.js'%}"></script>
+<script src="{% static 'assets/js/bootstrap.bundle.min.js'%}"></script>
+<script src="{% static 'assets/js/jquery.hoverIntent.min.js'%}"></script>
+<script src="{% static 'assets/js/jquery.waypoints.min.js'%}"></script>
+<script src="{% static 'assets/js/superfish.min.js'%}"></script>
+<script src="{% static 'assets/js/owl.carousel.min.js'%}"></script>
+<!-- Main JS File -->
+<script src="{% static 'assets/js/main.js'%}"></script>
+</body>
+
+
+<!-- molla"/checkout".html  22 Nov 2019 09:55:06 GMT -->
+</html>

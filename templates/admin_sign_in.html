@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aldrich_admin</title>
+    <script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <style>
+        .input_box {
+            border-radius: 5px;
+            border: .5px solid rgb(4, 4, 4);
+            padding: 10px 10px;
+            width: 100%;
+        }
+        .sign_button {
+            border-radius: 5px;
+            border: 1px solid rgb(107, 100, 209);
+            background-color: rgb(84, 84, 225);
+            color: white;
+            padding: 3px 10px;
+        }
+
+        .sign_button:hover {
+            background-color: white;
+            color: blue;
+            border: 1px solid white;
+        }
+
+        .links {
+            color: rgb(180, 174, 174);
+        }
+
+        .links:hover {
+
+            font-weight: bold;
+            color: rgb(255, 255, 255);
+        }
+        .heading{
+            color:rgb(255, 255, 255);
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <body style="background-image:url('https://img.freepik.com/free-vector/watercolor-stains-abstract-background_23-2149107181.jpg?w=996&t=st=1669110238~exp=1669110838~hmac=f3aeaaf99626a0fd164cbce27d58f81c1b69075a7aad04ba68b76d7e127e0280');background-size: cover;">
+    <div style="display: flex;justify-content: center;">
+        <div
+            style="border:2px solid rgb(36, 32, 32);margin:20vh;padding:50px;background-color: rgb(22, 0, 43);border-radius: 10px;box-shadow: 0px 20px 20px;">
+            <h3 class="heading" style="margin: 0px;">Admin sign in</h3>
+            <p class="heading" style="font-size: 12px;margin:0px;color:grey">sign in with your ALDRICH Adminaccount</p>
+            <div id="message" style="color: rgb(231, 6, 6);font-size: 12px;"></div>
+            <div style="margin-top: 10px;">
+                <p class="heading" style="font-size: 15px;">Email Id</p>
+                <input type="text" id="user_email" placeholder="eg.aldrich@gmail.com" class="input_box">
+                <div id="user_email_err" style="color: rgb(231, 6, 6);font-size: 12px;"></div>
+                <p class="heading" style="font-size: 15px;">Password</p>
+                <input type="password" id="user_password" placeholder="eg.Password@123" class="input_box">
+                <div id="user_password_err" style="color: rgb(255, 0, 0);font-size: 12px;"></div>
+                <p style="display: flex; justify-content: center;margin:10px;border-radius: 10px;">
+                    <input type="button" value="sign in" onclick="validate()" class="sign_button">
+                <div style="display: flex;flex-direction: column;font-size: 14px;">
+                    <a href="/user_forget_password" class="links" class="heading">Forget the password</a>
+                </div>
+                </p>
+            </div>
+        </div>
+    </div>
+    <script>
+        function validate() {
+            var user_email = document.getElementById('user_email').value
+            var user_email_err = document.getElementById('user_email_err')
+            var user_password = document.getElementById('user_password').value
+            var user_password_err = document.getElementById('user_password_err')
+            var message = document.getElementById('message')
+
+            if (user_email == '') {
+                console.log('Email field cannot be empty');
+                user_email_err.innerHTML = 'Email field cannot be empty.'
+            }            
+            else if (user_password == '') {
+                console.log('Password cannot be empty');
+                user_password_err.innerHTML = 'Password Cannot be empty'
+            }
+            else {
+                user_password_err.innerHTML = ''
+                console.log('trying to log in with user data');
+                try_to_signin(user_email,user_password)
+            }
+        }
+
+        function try_to_signin(user_email,user_password){
+
+            $.ajaxSetup({
+                data:{csrfmiddlewaretoken :'{{ csrf_token }}'}
+            })
+
+            $.ajax({
+                url:'/admin_sign_in',
+                method:'post',
+                data:{'user_email':user_email,'user_password':user_password},
+                success:function(response){
+                    resp = response['user_authentication_status']
+                    if(resp == 'admin_not_found'){
+                        console.log('admin_not_found_error')
+                        message.innerHTML = 'admin not found'
+                    }
+                    else if(resp == 'wrong_password'){
+                        console.log('wrong password error')
+                        message.innerHTML='wrong password'
+                    }
+                    else if(resp == 'admin_not_active'){
+                        console.log('user_not_active')
+                        message.innerHTML='user not active'
+                    }                    
+                    else if(resp == 'user_not_admin'){
+                        console.log('user not admin')
+                        message.innerHTML='user not admin'
+                    }
+                    else if(resp == 'success'){
+                        console.log('user is nice')
+                        window.location.href='/admin_panel'
+                    }
+                    // window.location.href = '/user_home'
+                },
+            })
+        }
+    </script>
+
+</body>
+</html>

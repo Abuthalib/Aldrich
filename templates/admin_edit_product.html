@@ -1,0 +1,119 @@
+{% extends 'admin_base.html' %}
+{% block content %}
+{% load static %}
+
+<head>
+    <style>
+        .title{
+            color:rgb(255, 255, 255);
+            text-transform: uppercase;
+        }
+        .input{
+            margin: 10px;
+            border-radius: 10px;
+            padding: 5px;
+            border: 1px solid grey;
+            text-transform: uppercase;
+            font-weight: bold;
+            background-color: rgba(0,0,0,.5);
+            color: rgb(182, 182, 182);
+        }
+        .submit{
+          background-color:rgb(12, 120, 216);
+          border-radius:10px;
+          border:none;
+          color:white;
+          font-size:14px;
+          margin:5px;
+          padding: 10px;
+          width: 100%;
+        }
+        .submit:hover{
+          background-color: rgb(7, 214, 255);
+        }
+    </style>
+</head>
+
+  <main id="main" class="main" >
+    <div class="pagetitle">
+      <h1 style="color: white;">UPDATE '{{product.name}}'</h1>
+    </div><!-- End Page Title -->
+    <section class="section">
+      <div class="row">
+        <div class="col-lg-8">
+          <div class="card" style="background-color:rgba(0,0,0,.5) ; border:1px solid white;">
+            <div class="card-body">
+              <h5 class="card-title" style="color:white ;"></h5>
+<!--////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
+              <!-- Default Table -->
+
+                      <form action="/admin_edit_Product" method="POST" enctype="multipart/form-data" >
+                        {%csrf_token%}
+                        <div style="display:flex;justify-content:space-between;" >
+                          <p class="title">ID&nbsp</p>
+                          <input name="id" class="input" value="{{product.id}}" type="text" readonly>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;" >
+                          <p class="title">Name&nbsp</p>
+                          <input name="product_name" class="input" value="{{product.name}}" type="text" >
+                        </div>
+                        <div style="display:flex;justify-content:space-between;">
+                          <p class="title">Price&nbsp</p>
+                          <input name="product_price" class="input" value="{{product.price}}" type="text" >
+                        </div>
+                        <div style="display:flex;justify-content:space-between;" >
+                        <p class="title">Category&nbsp</p>
+                        <input name="product_category"class="input" value="{{product.category}}" type="text" >
+                        </div>
+                        <div style="display:flex;justify-content:space-between;">
+                          <p class="title">Description&nbsp</p>
+                          <input name="product_description"class="input" value="{{product.description}}" type="text" >
+                        </div>
+                        <div style="display:flex;justify-content:space-between;">
+                          <p class="title">specification&nbsp</p>
+                          <input name="product_specification" class="input" value="{{product.specification}}" type="text" >
+                        </div>
+                        <div style="display:flex;justify-content:space-between;">
+                         <p class="title">Stock Available&nbsp</p>
+                         <input name="product_stock_available" class="input" value="{{product.stock_available}}" type="text" >
+                        </div>
+                        <div style="display:flex;justify-content:space-between;">
+                          <p class="title">Rating&nbsp</p>
+                          <input name="product_rating" class="input"value="{{product.rating}}" type="text" >
+                        </div>
+                        <div style="display:flex;justify-content:space-between;">
+                          <p class="title">Status&nbsp</p>
+                          <input name="product_status" class="input"value="{{product.available_status}}" type="text" >
+                        </div>
+                        <div style="display:flex;justify-content:space-between;">
+                          <p class="title">IMAGE 1&nbsp</p>
+                          <input name="image_1" class="input" type="file" >
+                        </div>
+                        <div style="display:flex;justify-content:space-between;">
+                          <p class="title">IMAGE 2&nbsp</p>
+                          <input name="image_2" class="input"  type="file" >
+                        </div>
+                        <div style="display:flex;justify-content:space-between;">
+                          <p class="title">IMAGE 3&nbsp</p>
+                          <input name="image_3" class="input" type="file" >
+                        </div>
+                        <div style="display:flex;justify-content:space-between;">
+                          <p class="title">IMAGE 4&nbsp</p>
+                          <input name="image_4" class="input" type="file" >
+                        </div>
+                        <div style="display:flex;justify-content:space-between;">
+                          <p class="title">offer percentage &nbsp</p>
+                          <input name="offer_percentage" type="number" min="0" max="100" value="{{product.offer_percentage}}">
+                        </div>
+                          <div style="margin:10px;" style="display:flex;justify-content:space-between;">
+                            <input type="submit" class="submit">
+                            </div>
+                      </form>
+
+        </div>
+      </div>
+    </section>
+
+  </main><!-- End #main -->
+
+{%endblock%}

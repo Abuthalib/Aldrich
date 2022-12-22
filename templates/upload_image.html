@@ -1,0 +1,185 @@
+{% extends 'admin_base.html' %}
+{% block content %}
+{% load static %}
+<!-- ======= Header ======= -->
+<main id="main" class="main">
+    <div class="col-lg-12 col-md-12 col-sm-12">
+        <div class="card" style="background-color: rgb(255, 255, 255);">
+          <div class="card-body">
+            <h5 class="card-title" style="margin-bottom: 0px;color:rgb(0, 0, 0);margin-bottom: 0px;">Make sure the details are correct</h5>
+            <p
+              style="color: rgb(129, 131, 139);font-weight:normal ;margin-top: 0px;margin-bottom: 2%;color:rgb(0, 0, 0);font-size: 13px;">
+              Enter the information of the product exactly as it is</p>
+              <hr style="background-color: black;height: 2px;">
+            <!-- user data  -->
+
+<form action="/admin_add_product" method="POST" enctype="multipart/form-data" id="formUpload" 
+style="color: rgb(83, 83, 83);font-weight:bold ;background-color: rgb(255, 255, 255);padding: 5%;border-radius: 10px;">
+{% csrf_token %}
+
+<!-- MODAL TO CROP THE IMAGE -->
+<div class="modal fade" id="modalCrop" style="width: 80%;" >
+  <div class="modal-dialog" style="width: 100%;">
+    <div class="modal-content" style="width: 100%;">
+      <div class="modal-header">
+        <a href="/admin_add_product">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        </a>
+        <h4 class="modal-title">Crop the photo</h4>
+      </div>
+      <div class="modal-body" style="width: 90%;">
+        <img src="" id="image_c" style="max-width: 60%;">
+      </div>
+      <div class="modal-footer">
+        <div class="btn-group pull-left" role="group">
+          <button type="button" class="btn btn-default js-zoom-in">
+            <span class="glyphicon glyphicon-zoom-in"></span>
+          </button>
+          <button type="button" class="btn btn-default js-zoom-out">
+            <span class="glyphicon glyphicon-zoom-out"></span>
+          </button>
+        </div>
+        <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Nevermind</button> -->
+        <button type="button" class="btn btn-primary js-crop-and-upload">Crop and upload</button>
+      </div>
+    </div>
+  </div>
+</div>
+<input style="display: none;" value="" id="id_x" name="x">
+<input style="display: none;" value="" id="id_y" name="y">
+<input style="display: none;" value="" id="id_height" name="height">
+<input style="display: none;" value="" id="id_width" name="width">
+
+{% if index == 1 %}
+<label>upload the first image</label>
+<input type="file" name="image_1" id="id_image_1">
+{% elif index == 2 %}
+<label>upload the second image</label>
+<input type="file" name="image_2" id="id_image_2">
+
+{% elif index == 3 %}
+<label>upload the third image</label>
+<input type="file" name="image_3" id="id_image_3">
+
+{% elif index == 4 %}
+<label>upload the fourth image</label>
+<input type="file" name="image_4" id="id_image_4">
+
+
+{% endif %}
+</form>
+
+<!-- CONTAINER TO DISPLAY THE CROPPED IMAGES -->
+
+</div>
+</div>
+</div>
+</div>
+</main>
+<script src="{% static 'admin_assets/js/cropperjs/cropper.min.js' %}"></script>
+<script src="{% static 'admin_assets/js/cropperjs/jquery.min.js' %}"></script>
+<script src="{% static 'admin_assets/js/cropperjs/jquery-cropper.min.js' %}"></script>
+
+<script>
+
+  $(function () {
+
+
+    /* SCRIPT TO OPEN THE MODAL WITH THE PREVIEW */
+    $("#id_image_1").change(function () {
+      console.log('got the orginal image...')
+      if (this.files && this.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+          $("#image_c").attr("src", e.target.result);
+          $("#modalCrop").modal("show");
+        }
+        reader.readAsDataURL(this.files[0]);
+      }
+    });
+    $("#id_image_2").change(function () {
+      console.log('got the orginal image...')
+      if (this.files && this.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+          $("#image_c").attr("src", e.target.result);
+          $("#modalCrop").modal("show");
+        }
+        reader.readAsDataURL(this.files[0]);
+      }
+    });
+    $("#id_image_3").change(function () {
+      console.log('got the orginal image...')
+      if (this.files && this.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+          $("#image_c").attr("src", e.target.result);
+          $("#modalCrop").modal("show");
+        }
+        reader.readAsDataURL(this.files[0]);
+      }
+    });
+    $("#id_image_4").change(function () {
+      console.log('got the orginal image...')
+      if (this.files && this.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+          $("#image_c").attr("src", e.target.result);
+          $("#modalCrop").modal("show");
+        }
+        reader.readAsDataURL(this.files[0]);
+      }
+    });
+    console.log('started')
+    /* SCRIPTS TO HANDLE THE CROPPER BOX */
+    var $image_c = $('#image_c')
+    var cropBoxData;
+    var canvasData;
+    $("#modalCrop").on("shown.bs.modal", function () {
+        $image_c.cropper({
+        viewMode: 1,
+        aspectRatio: 1/1,
+        minCropBoxWidth: 200,
+        minCropBoxHeight: 200,
+        ready: function () {
+        $image_c.cropper("setCanvasData", canvasData);
+        $image_c.cropper("setCropBoxData", cropBoxData);
+    }
+    });
+
+    }).on("hidden.bs.modal", function () {
+    cropBoxData = $image_c.cropper("getCropBoxData");
+    canvasData = $image_c.cropper("getCanvasData");
+    $image_c.cropper("destroy");
+    });
+
+    $(".js-zoom-in").click(function () {
+      $image_c.cropper("zoom", 0.1);
+
+    });
+    // Enable zoom out button
+    $(".js-zoom-out").click(function () {
+      $image_c.cropper("zoom", -0.1);
+    });
+      /* SCRIPT TO COLLECT THE DATA AND POST TO THE SERVER */
+      $(".js-crop-and-upload").click(function () {
+
+
+      var cropData = $image_c.cropper("getData");
+      $("#id_x").val(cropData["x"]);
+      $("#id_y").val(cropData["y"]);
+      $("#id_height").val(cropData["height"]);
+      $("#id_width").val(cropData["width"]);
+    
+    // $('#cropdata').value = cropData
+      $("#formUpload").submit();
+
+    });
+
+  });
+
+ 
+</script>
+{%endblock%}

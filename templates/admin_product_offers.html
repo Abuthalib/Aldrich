@@ -1,0 +1,148 @@
+{% extends 'admin_base.html' %}
+{% block content %}
+
+<!-- ======= Sidebar ======= -->
+
+<head>
+  <style>
+    #table_title {
+      color: rgb(5, 5, 6);
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<main id="main" class="main">
+  <div class="pagetitle">
+    <h1>Manage Product Offers</h1>
+  </div><!-- End Page Title -->
+
+  <section class="section">
+    <div class="row">
+      <div class="col-lg-12">
+
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title"></h5>
+            <!--////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
+            <!-- Default Table -->
+            {% if products %}
+            <table class="table" id="table_title">
+              <thead>
+                <tr>
+                  <th scope="col">View Product</th>
+                  <th scope="col">Product Name</th>
+                  <th scope="col">Existing Offer</th>
+                  <th scope="col">Update</th>
+                </tr>
+              </thead>
+              <!--                /////////////////////////////////////////////////////////////////////////////-->
+              <tbody>
+                {% for product in products %}
+                <tr>
+                  <td><img src="/media/{{product.image_1}}" width="30px"></td>
+                  <td>{{product.name}}</td>
+                  <td><input value={{product.offer_percentage}} style="width:40px;text-align: center;"
+                      id="{{product.id}}offer_percentage" type="number" max="30" min="0"> &nbsp%</td>
+                  <td><button style="border-radius: 5px;
+                               border:1px solid grey;
+                               background-color:rgb(0, 179, 255);
+                               color:white;
+                               font-size: 14px;
+                               padding:5px;
+                               " onclick='confirm_("{{product.id}}")'>Update</button></td>
+          </div>
+          </td>
+          </tr>
+          {% endfor %}
+          </tbody>
+          </table>
+          {% else %}
+          <div>
+
+            <div style="text-align: center;margin: 30px;">
+              <img src="/media/message_images/no data.png" width="30%">
+
+            </div>
+            <div style="color: black;text-align: center;font-size: 20px;">Oops! You had no sales</div>
+            <p style="color: rgb(133, 127, 127);text-align: center;">
+              you didn't had any sales for the duration that you are searching for.
+            </p>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    </div>
+  </section>
+  <form action="/admin_product_offers" method="POST">
+    {% csrf_token %}
+    <nav aria-label="Page navigation example">
+      <ul class="pagination">
+        <li class="page-item" id="disable_p" >
+          <button class="page-link" type="submit" name="page_number" value="{{current_page|add:'-1'}}" onmouseover="if(this.value == '0'){document.getElementById('disable_p').classList.add('disabled')}">Previous</button>
+        </li>
+
+        {% for i in available_pages %}
+        <li class="page-item">
+          <input type="text" name="duration" value="{{duration}}" style="display: none;">
+          <input value='{{forloop.counter}}' class="page-link" type="submit" name="page_number" id="page_num">
+        </li>
+        {% endfor %}
+        <li class="page-item" id="disable_n">
+          <button class="page-link" type="submit" name="page_number" value="{{current_page|add:'1'}}" onmouseover="if(this.value > '{{available_pages|length}}'){document.getElementById('disable_n').classList.add('disabled')}">Next</button>
+        </li>
+      </ul>
+    </nav><!-- End Left/Start Pagination -->
+  </form>
+</main><!-- End #main -->
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+
+<script>
+
+  $(document).ready(function () {
+    console.log('your document is ready');
+  })
+
+  function confirm_(product_id) {
+    Swal.fire({
+      title: 'Are you sure to update the offer? ',
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: 'yes',
+      cancelButtonText: 'Go back',
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      // console.log(result)
+      if (result.value == true) {
+        offer_update(product_id)
+      }
+    })
+  }
+
+
+  function offer_update(product_id) {
+    new_offer = document.getElementById(product_id + 'offer_percentage').value
+
+    $.ajaxSetup({
+      data: { csrfmiddlewaretoken: '{{csrf_token}}' },
+    });
+
+    $.ajax({
+      url: '/admin_product_offers',
+      method: 'POST',
+      data: { 'new_offer_percentage': new_offer, 'product_id': product_id },
+      success: function (response) {
+        console.log('updated successfuly')
+        window.location.reload()
+      },
+      error: function () {
+        console.log('ajax is not working')
+      }
+    });
+  }
+
+
+
+</script>
+
+{%endblock%}

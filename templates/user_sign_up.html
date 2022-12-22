@@ -1,0 +1,177 @@
+{% extends 'user_base.html' %}
+{% block content %}
+
+<head>
+    <style>
+        .input_box {
+            border-radius: 5px;
+            border:.5px solid rgb(4, 4, 4);
+            padding:5px 10px;
+        }
+        .sign_button{
+            border-radius: 5px;
+            border:1px solid rgb(107, 100, 209);
+            background-color: rgb(84, 84, 225);
+            color:white;
+            padding:3px 10px;
+        }
+        .sign_button:hover{
+            background-color: white;
+            color: blue;
+            border: 1px solid white;
+        }
+        .links{
+            color:rgb(180, 174, 174) ;
+        }
+        .links:hover{
+       
+            font-weight: bold;
+            color: rgb(255, 255, 255);
+        }
+    </style>
+</head>
+
+<body style="background-image:url('media/gifs/anim2.gif');background-size: cover;">
+    <div style="display: flex;justify-content: center;">
+        <div
+            style="border:2px solid rgb(255, 255, 255);margin:20vh;padding:50px;background-color: rgba(24, 13, 35,.7);border-radius: 10px;color: rgb(10, 9, 9);">
+            <h3 style="color: white;margin: 0px;">sign up</h3>
+            <p>create your widecity account</p>
+            <div id="message" style="color:red;font-size: 12px;"></div>
+            <div style="margin-top: 10px;">
+                <p style="color: white;">Full Name</p>
+                <input type="text" id="user_full_name" placeholder="eg.aldrich" class="input_box">
+                <div id="user_full_name_err" style="color:rgb(255, 0, 0);font-size: 14px;"></div>
+                <p style="color: white;">Email Id</p>
+                <input type="text" id="user_email" placeholder="eg.aldrich@gmail.com" class="input_box">
+                <div id="user_email_err" style="color:rgb(255, 0, 0);font-size: 14px;"></div>
+                <p style="color: rgb(255, 255, 255);">Password</p>
+                <input type="password" id="user_password" placeholder="eg.Password@123" class="input_box">
+                <div id="user_password_err" style="color:rgb(255, 0, 0) ;font-size: 14px;"></div>
+                <p style="color: rgb(255, 255, 255);">Contact Number</p>
+                <input type="number" id="user_contact_number" placeholder="eg.0123456789" class="input_box">
+                <div id="user_contact_number_err" style="color:rgb(255, 0, 0);font-size: 14px;"></div>
+                <p style="color: rgb(255, 255, 255);">User Reference ID (optional)</p>       
+                <input type="text" id="user_reference_id" placeholder="eg.JDfihsFSDEFAER" class="input_box">
+                <div id="user_reference_id_err" style="color:rgb(255, 0, 0);font-size: 14px;"></div>
+
+                <p style="display: flex; justify-content: center;margin:10px;border-radius: 10px;">
+                    <input type="button" value="sign up" onclick="validate()" class="sign_button">
+                    <div style="display: flex;flex-direction: column;font-size: 14px;">
+                        <p>Already have an account |<a href="/user_sign_in" class="links"> sign in</a></p>
+                    </div>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        
+        function validate() {
+
+
+            var user_full_name = document.getElementById('user_full_name').value
+            var user_email = document.getElementById('user_email').value
+            var user_password = document.getElementById('user_password').value
+            var user_contact_number = document.getElementById('user_contact_number').value
+
+            var user_full_name_err = document.getElementById('user_full_name_err')
+            var user_email_err = document.getElementById('user_email_err')
+            var user_password_err = document.getElementById('user_password_err')
+            var user_contact_number_err = document.getElementById('user_contact_number_err')
+
+
+            var user_reference_id = document.getElementById('user_reference_id').value
+            var user_reference_id_err = document.getElementById('user_reference_id_err')
+           
+            console.log(user_reference_id)
+            // empty validation
+            if (user_full_name == '') {
+                console.log('your name field cannot be empty.');
+                user_full_name_err.innerHTML = 'your name field cannot be empty.'
+                user_email_err.innerHTML = ''
+                user_password_err.innerHTML = ''
+                user_contact_number_err.innerHTML = ''
+            }            
+            else if (user_email == '') {
+                console.log('email Cannot be empty');
+                user_email_err.innerHTML = 'email Cannot be empty'
+                user_full_name_err.innerHTML = ''
+                user_password_err.innerHTML = ''
+                user_contact_number_err.innerHTML = ''
+            }            
+            else if (user_password == '') {
+                console.log('Password cannot be empty');
+                user_password_err.innerHTML = 'Password Cannot be empty'
+                user_email_err.innerHTML = ''
+                user_full_name_err.innerHTML = ''
+                user_contact_number_err.innerHTML = ''
+            }
+            else if (user_contact_number == '') {
+                console.log('Contact number Cannot be empty');
+                user_contact_number_err.innerHTML = 'Contact number Cannot be empty'
+                user_email_err.innerHTML = ''
+                user_password_err.innerHTML = ''
+                user_full_name_err.innerHTML = ''
+            }
+            else {
+                user_contact_number_err.innerHTML = ''
+                user_email_err.innerHTML = ''
+                user_password_err.innerHTML = ''
+                user_full_name_err.innerHTML = ''
+                console.log('trying to sign up with user data');
+                // calling the try_to_sighin function to request the server for authentication usering ajax
+                try_to_signup(user_full_name,user_email,user_password,user_contact_number,user_reference_id)
+            }
+        }
+
+        function try_to_signup(user_full_name,user_email,user_password,user_contact_number,user_reference_id){
+            
+            console.log(user_reference_id)
+            
+            $.ajaxSetup({
+                data:{csrfmiddlewaretoken :'{{ csrf_token }}'}
+            })
+
+            // post request to user_sign_in in views.py
+            $.ajax({
+                url:'/user_sign_up',
+                method:'post',
+                data:{
+                    'user_full_name':user_full_name,
+                    'user_email':user_email,
+                    'user_password':user_password,
+                    'user_contact_number':user_contact_number,
+                    'user_reference_id':user_reference_id,
+                },
+                success:function(response){
+                    resp = response['user_sign_up_status']
+                    reference_id_status = response['reference_id_status']
+                    if(reference_id_status == 'refered'){
+                        console.log('refference added')
+                    }
+                    else{
+                        console.log('reference id does not exist')
+                    }
+
+                    if(resp == 'user_created'){
+                        console.log('user_created')
+                        console.log('redirecting to the welcome page')
+                        window.location.href = '/welcome_new_user'
+                    }
+                    else if(resp == 'failed'){
+                        console.log('failed to create the user account')
+                        document.getElementById('message').innerText = 'failed to create the user account'
+                    }
+                    else if(resp == 'user_exist'){
+                        console.log('user already exist. Please try another details.')
+                        document.getElementById('message').innerText = 'user already exist. Please try another details.'
+                    }
+                },
+            })
+        }
+    </script>
+
+
+    {% endblock %}

@@ -1,0 +1,744 @@
+{% extends 'user_base.html' %}
+{% block content %}
+{% load static %}
+
+<head>
+    <link href="{% static 'admin_assets/vendor/bootstrap/css/bootstrap.min.css'%}" rel="stylesheet">
+    <link href="{% static 'admin_assets/vendor/bootstrap-icons/bootstrap-icons.css'%}" rel="stylesheet">
+    <link href="{% static 'admin_assets/vendor/boxicons/css/boxicons.min.css'%}" rel="stylesheet">
+    <link href="{% static 'admin_assets/vendor/quill/quill.snow.css'%}" rel="stylesheet">
+    <link href="{% static 'admin_assets/vendor/quill/quill.bubble.css'%}" rel="stylesheet">
+    <link href="{% static 'admin_assets/vendor/remixicon/remixicon.css'%}" rel="stylesheet">
+    <link href="{% static 'admin_assets/vendor/simple-datatables/style.css'%}" rel="stylesheet">
+    <!-- Template Main CSS File -->
+    <style>
+        .payments {
+            font-size: 15px;
+            font-weight: bold;
+            margin: 10px;
+        }
+        .customtext {
+            color: rgb(0, 0, 0);
+        }
+        .payment_tabs {
+            color: white;
+            background-color: rgba(14, 14, 16, .1);
+        }
+        .adata {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            font-weight: bold;
+            color: grey;
+        }
+        .pt {
+            background-color: rgb(0, 106, 255);
+            color: rgb(255, 255, 255);
+        }
+        .pb{
+            background-color: rgb(11, 21, 92);
+            padding:5px 10px;
+            color:white;
+            border-radius: 5px;
+            border: none;
+            margin:5px;
+        }
+
+    </style>
+</head>
+<main class="main" style="background-color: white;padding: 10%;">
+   
+    
+    {% if address %}
+
+    <div class="page-content container-fluid" >
+
+
+        <section >
+            <div class="container">
+                <div class="checkout-discount" id="discount">
+                    <div action="#" style="margin: 10px 0px;">
+                        <div id="message" style="color: red;margin: 5px;"></div>
+                        <input type="text" id="coupon"
+                            style="background-color: rgb(255, 255, 255);border-radius:5px;border:1px solid rgb(0, 0, 0);padding: 10px;color: rgb(0, 0, 0);font-weight: bold;font-size: 14px;"
+                            placeholder="coupon code">
+                        <input onclick="apply_coupon()" value="Apply Coupon"
+                            style="margin:10px 0px;text-align: center;border-radius: 5px;padding:5px 5px;background-color: rgb(0, 140, 255);color:white;border: 1px solid rgb(166, 166, 166);cursor: pointer;;">
+                    </div>
+                </div> 
+                <section >
+
+                    {% for each in address %}
+                    <a  class="address" style="margin: 10px;cursor: pointer;" >
+                        <div  style="border:2px solid rgb(0, 0, 0);padding:20px;border-radius:10px;text-transform: uppercase;" id="{{each.id}}selected" class="available_address" onclick="select_address('{{each.id}}')" >
+                            <div style="justify-content: end;display: inline-flex;width: 100%;"><input type="radio" name="address" checked id="{{each.id}}address_checkbox"></div>
+                            <div class="adata">{{each.first_name}} {{each.last_name}}</div>
+                            <div class="adata">{{each.building_name}}</div>
+                            <div class="adata">{{each.street}}</div>
+                            <div class="adata">{{each.pincode}}</div>
+                            <div class="adata">{{each.contact}}</div>
+                            <div class="adata">{{each.alt_contact}}</div>
+                            <div style="display: flex;justify-content: end;">
+                                <a href="/user_edit_address/{{each.id}}"><button
+                                        style="padding:5px 10px;background-color: rgb(0, 200, 255);color: white;border:1px solid grey">Edit</button></a>
+                            </div>
+                        </div>
+                    </a>
+                   
+                    {% endfor %}
+
+                    <script>
+                        function select_address(id){
+                           
+                            document.getElementById(id+'address_checkbox').checked = true
+                            console.log('you selected address with address '+id)
+                        }
+                    </script>
+
+                </section>
+                <a href="/user_add_address">
+                    <button type="submit"
+                        style="border:none;color:white;background-color:rgb(20, 126, 233);border-radius:5px;margin:10px 0px;padding: 10px;">
+                        Add New Address
+                    </button>
+                </a>
+            </div>
+        </section>
+
+        <section >
+            <p>
+            <div class="summary"
+                style="background-color: rgb(255, 255, 255);border-radius:10px;padding: 30px;color:black;border:1px solid black;">
+                <h3 class="summary-title customtext">Your Order</h3>
+                <table class="table table-summary">
+                    <tr class="summary-subtotal customtext">
+                        <td>
+                            <div class="customtext">Subtotal:</div>
+                        </td>
+                        <td>
+                            <div class="customtext">Rs. <span id="update_discount">{{sub_total}}</span> </div>
+                        </td>
+                    </tr>
+                    <tr class="summary-total">
+                        <td>
+                            <div class="customtext">Total:</div>
+                        </td>
+                        <td>
+                            <div class="customtext">Rs.<span id="update_discount_total"> {{sub_total}}</span></div>
+                        </td>
+                    </tr>
+                </table>
+                <section>
+                    <!-- Default Accordion -->
+                    <div class="accordion" id="accordionExample">
+                        <div class="accordion-item payment_tabs">
+                            <h2 class="accordion-header" id="headingOne">
+                                <button class="accordion-button pt" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    Cash on delivery
+                                </button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+                                data-bs-parent="#accordionExample">
+                                <div class="accordion-body" style="color: rgb(0, 0, 0);">
+                                    <strong>cash on delivery is available for all the products. Cash on delivery (COD) is when a recipient pays for a good or service at the time of delivery. A Go for the
+                                        payment.</strong>
+                                    <button class="btn btn-outline-primary-2 btn-order btn-block"
+                                        style="margin-top: 20px;" onclick=cod()>
+                                        <span class=" pb">Place Order</span>
+                                        <!-- <span class="btn-hover-text pt">Proceed to Checkout</span> -->
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item payment_tabs">
+                            <h2 class="accordion-header" id="headingTwo">
+                                <button class="accordion-button collapsed pt" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    Razorpay
+                                </button>
+                            </h2>
+                            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                                data-bs-parent="#accordionExample">
+                                <div class="accordion-body" style="color:black">
+                                    <strong>complete your payment with Razorpay which is one of the best transaction
+                                        method used world wide.Razorpay is the only payments solution in India that allows businesses to accept, process and disburse payments with its product suite. </strong>
+                                    <form action="/user_razorpay_place_order" method="POST">
+                                        {% csrf_token %}
+                                        <input name="user" value={{user.email}} style="display: none;">
+                                        <input name="payment_method" value='razorpay' style="display: none;">
+                                        <script src="https://checkout.razorpay.com/v1/checkout.js"
+                                            data-key="rzp_test_J2X3TWffxff9Ha" data-amount="{{total_razorpay}}"
+                                            data-currency="INR" data-buttontext="Pay with Razorpay"
+                                            data-name="{{user.full_name}}"
+                                            data-description="Aldrich handles your payment in a secure way"
+                                            data-image="{{user.profile_image}}" data-prefill.name="{{user.full_name}}"
+                                            data-prefill.email="{{user.email}}" data-theme.color="#F37254"></script>
+                                        <input type="hidden" custom="Hidden Element" name="hidden">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                         <div class="accordion-item payment_tabs">
+                            <h2 class="accordion-header" id="headingfour">
+                                <button class="accordion-button collapsed pt" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapsefour" aria-expanded="false" aria-controls="collapsefour">
+                                    Wallet
+                                </button>
+                            </h2>
+                            <div id="collapsefour" class="accordion-collapse collapse" aria-labelledby="headingfour"
+                                data-bs-parent="#accordionExample">
+                                <div class="accordion-body" style="color:black">
+                                    e-wallet payment is a secure method for sellers since payment is guaranteed.wallets are a digital payment method on a phone or device. 
+                                </div>
+                                <div style="display: flex;justify-content: center;">
+                                    <button onclick="user_wallet_pay('{{sub_total}}')" class="pb">pay</button>
+                                    <a href="/user_wallet"><button class="pb">view wallet</button></a>
+                                    <div id="wallet_message" style="color: red;font-size:12px ;display: inline;"></div>
+                                </div>
+
+                            </div>
+                        </div> 
+                        <script>
+                            function user_wallet_pay(sub_total) {
+                                console.log('you are going to do the payment of rupees ', sub_total, 'from wallet')
+                                $.ajaxSetup({
+                                    data: { csrfmiddlewaretoken: '{{csrf_token}}' }
+                                })
+                                $.ajax({
+                                    url: '/user_pay_with_wallet',
+                                    data: { 'sub_total': sub_total },
+                                    method: 'post',
+                                    success: function (response) {
+                                        console.log(response)
+                                        if (response['status'] == 'insufficiant_balance') {
+                                            document.getElementById('wallet_message').innerText = 'insufficiant balance'
+                                        }
+                                        else if (response['status'] == 'success') {
+                                            window.location.href = '/user_thankyou_for_order'
+                                        }
+                                        else {
+                                            document.getElementById('wallet_message').innerText = 'sry, something went wrong'
+                                        }
+                                    }
+                                })
+                            }
+                        </script>
+                        <div class="accordion-item payment_tabs">
+                            <h2 class="accordion-header" id="headingThree">
+                                <button class="accordion-button collapsed pt" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                    paypal
+                                </button>
+                            </h2>
+                            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
+                                data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    <!-- Replace "test" with your own sandbox Business account app client ID -->
+                                    <script
+                                        src="https://www.paypal.com/sdk/js?client-id=AeF-B8OtiCfZCJKWLD2wdBg4tV5RjHeg7qyJxplHIIPQzHu7YZI5txQWESWaBmT3j1A-dNVEiKiYGdGn&currency=USD"></script>
+                                    <!-- Set up a container element for the button -->
+                                    <div id="paypal-button-container"></div>
+                                    <script>
+                                        paypal.Buttons({
+                                            // Sets up the transaction when a payment button is clicked
+                                            createOrder: (data, actions) => {
+                                                return actions.order.create({
+                                                    purchase_units: [{
+                                                        amount: {
+                                                            value: '{{sub_total}}' // Can also reference a variable or function
+                                                        }
+                                                    }]
+                                                });
+                                            },
+                                            // Finalize the transaction after payer approval
+                                            onApprove: (data, actions) => {
+                                                return actions.order.capture().then(function (orderData) {
+                                                    // Successful capture! For dev/demo purposes:
+                                                    // console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+                                                    const transaction = orderData.purchase_units[0].payments.captures[0];
+                                                    // alert(`Transaction ${transaction.status}: ${transaction.id}\n\nSee console for all available details`);
+                                                    $.ajaxSetup({
+                                                        data: { csrfmiddlewaretoken: '{{csrf_token}}' }
+                                                    })
+                                                    $.ajax({
+                                                        url: '/user_paypal_place_order',
+                                                        method: 'post',
+                                                        data: { 'user': 'user', 'payment_method': 'paypal', 'address_id': 1 },
+                                                        success: function (response) {
+                                                            if (response['status'] == 'success') {
+                                                                console.log('order placed successfully')
+                                                                window.location.href = '/user_thankyou_for_order'
+                                                            }
+                                                            else {
+                                                                window.location.href = '/'
+                                                            }
+                                                        }
+                                                    })
+                                                    // When ready to go live, remove the alert and show a success message within this page. For example:
+                                                    // const element = document.getElementById('paypal-button-container');
+                                                    // element.innerHTML = '<h3>Thank you for your payment!</h3>';
+                                                    // Or go to another URL:  actions.redirect('thank_you.html');
+                                                });
+                                            }
+                                        }).render('#paypal-button-container');
+                                    </script>
+                                    <button class="btn btn-outline-primary-2 btn-order btn-block"
+                                        style="margin-top: 20px;" onclick=get_payment_gateway_modal_data()>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- End Default Accordion Example -->
+                </section>
+        </section>
+
+
+    </div><!-- End .container -->
+    <!-- End .page-content -->
+{% else %}
+<div style="background-color: white;padding: 10% 0px;">
+    <div style="text-align: center;margin: 30px;display: flex;justify-content: center;">
+        <img src="/media/message_images/no data.png" width="20%">
+    </div>
+    <div style="color: black;text-align: center;font-size: 20px;">Oops! You don't have any address.</div>
+    <p style="color: rgb(133, 127, 127);text-align: center;">
+        please add atleast one address to continue.
+    </p>
+    <div style="text-align: center;">
+    <a href="/user_add_address"><button style="padding: 5px 10px;background-color: rgb(136, 0, 255);color:white;border-radius: 5px;border: none;">Add Address +</button></a>
+    </div>
+</div>
+{% endif %}
+</main><!-- End .main -->
+
+<footer class="footer">
+    <div class="footer-middle">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6 col-lg-3">
+                    <div class="widget widget-about">
+                        <img alt="Footer Logo" class="footer-logo" height="25" src="assets/images/logo.png" width="105">
+                        <p>Praesent dapibus, neque id cursus ucibus, tortor neque egestas augue, eu vulputate magna
+                            eros
+                            eu erat. </p>
+                        <div class="social-icons">
+                            <a class="social-icon" href="#" target="_blank" title="Facebook"><i
+                                    class="icon-facebook-f"></i></a>
+                            <a class="social-icon" href="#" target="_blank" title="Twitter"><i
+                                    class="icon-twitter"></i></a>
+                            <a class="social-icon" href="#" target="_blank" title="Instagram"><i
+                                    class="icon-instagram"></i></a>
+                            <a class="social-icon" href="#" target="_blank" title="Youtube"><i
+                                    class="icon-youtube"></i></a>
+                            <a class="social-icon" href="#" target="_blank" title="Pinterest"><i
+                                    class="icon-pinterest"></i></a>
+                        </div><!-- End .soial-icons -->
+                    </div><!-- End .widget about-widget -->
+                </div><!-- End .col-sm-6 col-lg-3 -->
+                <div class="col-sm-6 col-lg-3">
+                    <div class="widget">
+                        <h4 class="widget-title">Useful Links</h4><!-- End .widget-title -->
+                        <ul class="widget-list">
+                            <li><a href="about.html">About Molla</a></li>
+                            <li><a href="#">How to shop on Molla</a></li>
+                            <li><a href="#">FAQ</a></li>
+                            <li><a href="contact.html">Contact us</a></li>
+                            <li><a href="login.html">Log in</a></li>
+                        </ul><!-- End .widget-list -->
+                    </div><!-- End .widget -->
+                </div><!-- End .col-sm-6 col-lg-3 -->
+                <div class="col-sm-6 col-lg-3">
+                    <div class="widget">
+                        <h4 class="widget-title">Customer Service</h4><!-- End .widget-title -->
+                        <ul class="widget-list">
+                            <li><a href="#">Payment Methods</a></li>
+                            <li><a href="#">Money-back guarantee!</a></li>
+                            <li><a href="#">Returns</a></li>
+                            <li><a href="#">Shipping</a></li>
+                            <li><a href="#">Terms and conditions</a></li>
+                            <li><a href="#">Privacy Policy</a></li>
+                        </ul><!-- End .widget-list -->
+                    </div><!-- End .widget -->
+                </div><!-- End .col-sm-6 col-lg-3 -->
+                <div class="col-sm-6 col-lg-3">
+                    <div class="widget">
+                        <h4 class="widget-title">My Account</h4><!-- End .widget-title -->
+                        <ul class="widget-list">
+                            <li><a href="#">Sign In</a></li>
+                            <li><a href="cart.html">View Cart</a></li>
+                            <li><a href="#">My Wishlist</a></li>
+                            <li><a href="#">Track My Order</a></li>
+                            <li><a href="#">Help</a></li>
+                        </ul><!-- End .widget-list -->
+                    </div><!-- End .widget -->
+                </div><!-- End .col-sm-6 col-lg-3 -->
+            </div><!-- End .row -->
+        </div><!-- End .container -->
+    </div><!-- End .footer-middle -->
+    <div class="footer-bottom">
+        <div class="container">
+            <p class="footer-copyright">Copyright © 2019 Molla Store. All Rights Reserved.</p>
+            <!-- End .footer-copyright -->
+            <figure class="footer-payments">
+                <img alt="Payment methods" height="20" src="assets/images/payments.png" width="272">
+            </figure><!-- End .footer-payments -->
+        </div><!-- End .container -->
+    </div><!-- End .footer-bottom -->
+</footer><!-- End .footer -->
+</div><!-- End .page-wrapper -->
+<button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
+<!-- Mobile Menu -->
+<div class="mobile-menu-overlay"></div><!-- End .mobil-menu-overlay -->
+<div class="mobile-menu-container">
+    <div class="mobile-menu-wrapper">
+        <span class="mobile-menu-close"><i class="icon-close"></i></span>
+        <form action="#" class="mobile-search" method="get">
+            <label class="sr-only" for="mobile-search">Search</label>
+            <input class="form-control" id="mobile-search" name="mobile-search" placeholder="Search in..." required
+                type="search">
+            <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
+        </form>
+        <nav class="mobile-nav">
+            <ul class="mobile-menu">
+                <li class="active">
+                    <a href="index.html">Home</a>
+                    <ul>
+                        <li><a href="index-1.html">01 - furniture store</a></li>
+                        <li><a href="index-2.html">02 - furniture store</a></li>
+                        <li><a href="index-3.html">03 - electronic store</a></li>
+                        <li><a href="index-4.html">04 - electronic store</a></li>
+                        <li><a href="index-5.html">05 - fashion store</a></li>
+                        <li><a href="index-6.html">06 - fashion store</a></li>
+                        <li><a href="index-7.html">07 - fashion store</a></li>
+                        <li><a href="index-8.html">08 - fashion store</a></li>
+                        <li><a href="index-9.html">09 - fashion store</a></li>
+                        <li><a href="index-10.html">10 - shoes store</a></li>
+                        <li><a href="index-11.html">11 - furniture simple store</a></li>
+                        <li><a href="index-12.html">12 - fashion simple store</a></li>
+                        <li><a href="index-13.html">13 - market</a></li>
+                        <li><a href="index-14.html">14 - market fullwidth</a></li>
+                        <li><a href="index-15.html">15 - lookbook 1</a></li>
+                        <li><a href="index-16.html">16 - lookbook 2</a></li>
+                        <li><a href="index-17.html">17 - fashion store</a></li>
+                        <li><a href="index-18.html">18 - fashion store (with sidebar)</a></li>
+                        <li><a href="index-19.html">19 - games store</a></li>
+                        <li><a href="index-20.html">20 - book store</a></li>
+                        <li><a href="index-21.html">21 - sport store</a></li>
+                        <li><a href="index-22.html">22 - tools store</a></li>
+                        <li><a href="index-23.html">23 - fashion left navigation store</a></li>
+                        <li><a href="index-24.html">24 - extreme sport store</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="category.html">Shop</a>
+                    <ul>
+                        <li><a href="category-list.html">Shop List</a></li>
+                        <li><a href="category-2cols.html">Shop Grid 2 Columns</a></li>
+                        <li><a href="category.html">Shop Grid 3 Columns</a></li>
+                        <li><a href="category-4cols.html">Shop Grid 4 Columns</a></li>
+                        <li><a href="category-boxed.html"><span>Shop Boxed No Sidebar<span
+                                        class="tip tip-hot">Hot</span></span></a></li>
+                        <li><a href="category-fullwidth.html">Shop Fullwidth No Sidebar</a></li>
+                        <li><a href="product-category-boxed.html">Product Category Boxed</a></li>
+                        <li><a href="product-category-fullwidth.html"><span>Product Category Fullwidth<span
+                                        class="tip tip-new">New</span></span></a></li>
+                        <li><a href="cart.html">Cart</a></li>
+                        <li><a href="/checkout">Checkout</a></li>
+                        <li><a href="wishlist.html">Wishlist</a></li>
+                        <li><a href="#">Lookbook</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a class="sf-with-ul" href="product.html">Product</a>
+                    <ul>
+                        <li><a href="product.html">Default</a></li>
+                        <li><a href="product-centered.html">Centered</a></li>
+                        <li><a href="product-extended.html"><span>Extended Info<span
+                                        class="tip tip-new">New</span></span></a></li>
+                        <li><a href="product-gallery.html">Gallery</a></li>
+                        <li><a href="product-sticky.html">Sticky Info</a></li>
+                        <li><a href="product-sidebar.html">Boxed With Sidebar</a></li>
+                        <li><a href="product-fullwidth.html">Full Width</a></li>
+                        <li><a href="product-masonry.html">Masonry Sticky Info</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">Pages</a>
+                    <ul>
+                        <li>
+                            <a href="about.html">About</a>
+                            <ul>
+                                <li><a href="about.html">About 01</a></li>
+                                <li><a href="about-2.html">About 02</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="contact.html">Contact</a>
+                            <ul>
+                                <li><a href="contact.html">Contact 01</a></li>
+                                <li><a href="contact-2.html">Contact 02</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="login.html">Login</a></li>
+                        <li><a href="faq.html">FAQs</a></li>
+                        <li><a href="404.html">Error 404</a></li>
+                        <li><a href="coming-soon.html">Coming Soon</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="blog.html">Blog</a>
+                    <ul>
+                        <li><a href="blog.html">Classic</a></li>
+                        <li><a href="blog-listing.html">Listing</a></li>
+                        <li>
+                            <a href="#">Grid</a>
+                            <ul>
+                                <li><a href="blog-grid-2cols.html">Grid 2 columns</a></li>
+                                <li><a href="blog-grid-3cols.html">Grid 3 columns</a></li>
+                                <li><a href="blog-grid-4cols.html">Grid 4 columns</a></li>
+                                <li><a href="blog-grid-sidebar.html">Grid sidebar</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#">Masonry</a>
+                            <ul>
+                                <li><a href="blog-masonry-2cols.html">Masonry 2 columns</a></li>
+                                <li><a href="blog-masonry-3cols.html">Masonry 3 columns</a></li>
+                                <li><a href="blog-masonry-4cols.html">Masonry 4 columns</a></li>
+                                <li><a href="blog-masonry-sidebar.html">Masonry sidebar</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#">Mask</a>
+                            <ul>
+                                <li><a href="blog-mask-grid.html">Blog mask grid</a></li>
+                                <li><a href="blog-mask-masonry.html">Blog mask masonry</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#">Single Post</a>
+                            <ul>
+                                <li><a href="single.html">Default with sidebar</a></li>
+                                <li><a href="single-fullwidth.html">Fullwidth no sidebar</a></li>
+                                <li><a href="single-fullwidth-sidebar.html">Fullwidth with sidebar</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="elements-list.html">Elements</a>
+                    <ul>
+                        <li><a href="elements-products.html">Products</a></li>
+                        <li><a href="elements-typography.html">Typography</a></li>
+                        <li><a href="elements-titles.html">Titles</a></li>
+                        <li><a href="elements-banners.html">Banners</a></li>
+                        <li><a href="elements-product-category.html">Product Category</a></li>
+                        <li><a href="elements-video-banners.html">Video Banners</a></li>
+                        <li><a href="elements-buttons.html">Buttons</a></li>
+                        <li><a href="elements-accordions.html">Accordions</a></li>
+                        <li><a href="elements-tabs.html">Tabs</a></li>
+                        <li><a href="elements-testimonials.html">Testimonials</a></li>
+                        <li><a href="elements-blog-posts.html">Blog Posts</a></li>
+                        <li><a href="elements-portfolio.html">Portfolio</a></li>
+                        <li><a href="elements-cta.html">Call to Action</a></li>
+                        <li><a href="elements-icon-boxes.html">Icon Boxes</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav><!-- End .mobile-nav -->
+        <div class="social-icons">
+            <a class="social-icon" href="#" target="_blank" title="Facebook"><i class="icon-facebook-f"></i></a>
+            <a class="social-icon" href="#" target="_blank" title="Twitter"><i class="icon-twitter"></i></a>
+            <a class="social-icon" href="#" target="_blank" title="Instagram"><i class="icon-instagram"></i></a>
+            <a class="social-icon" href="#" target="_blank" title="Youtube"><i class="icon-youtube"></i></a>
+        </div><!-- End .social-icons -->
+    </div><!-- End .mobile-menu-wrapper -->
+</div><!-- End .mobile-menu-container -->
+<!-- Sign in / Register Modal -->
+<div aria-hidden="true" class="modal fade" id="signin-modal" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                    <span aria-hidden="true"><i class="icon-close"></i></span>
+                </button>
+                <div class="form-box">
+                    <div class="form-tab">
+                        <ul class="nav nav-pills nav-fill" role="tablist">
+                            <li class="nav-item">
+                                <a aria-controls="signin" aria-selected="true" class="nav-link active" data-toggle="tab"
+                                    href="#signin" id="signin-tab" role="tab">Sign In</a>
+                            </li>
+                            <li class="nav-item">
+                                <a aria-controls="register" aria-selected="false" class="nav-link" data-toggle="tab"
+                                    href="#register" id="register-tab" role="tab">Register</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="tab-content-5">
+                            <div aria-labelledby="signin-tab" class="tab-pane fade show active" id="signin"
+                                role="tabpanel">
+                                <form action="#">
+                                    <div class="form-group">
+                                        <label for="singin-email">Username or email address *</label>
+                                        <input class="form-control" id="singin-email" name="singin-email" required
+                                            type="text">
+                                    </div><!-- End .form-group -->
+                                    <div class="form-group">
+                                        <label for="singin-password">Password *</label>
+                                        <input class="form-control" id="singin-password" name="singin-password" required
+                                            type="password">
+                                    </div><!-- End .form-group -->
+                                    <div class="form-footer">
+                                        <button class="btn btn-outline-primary-2" type="submit">
+                                            <span>LOG IN</span>
+                                            <i class="icon-long-arrow-right"></i>
+                                        </button>
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input" id="signin-remember" type="checkbox">
+                                            <label class="custom-control-label" for="signin-remember">Remember
+                                                Me</label>
+                                        </div><!-- End .custom-checkbox -->
+                                        <a class="forgot-link" href="#">Forgot Your Password?</a>
+                                    </div><!-- End .form-footer -->
+                                </form>
+                                <div class="form-choice">
+                                    <p class="text-center">or sign in with</p>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <a class="btn btn-login btn-g" href="#">
+                                                <i class="icon-google"></i>
+                                                Login With Google
+                                            </a>
+                                        </div><!-- End .col-6 -->
+                                        <div class="col-sm-6">
+                                            <a class="btn btn-login btn-f" href="#">
+                                                <i class="icon-facebook-f"></i>
+                                                Login With Facebook
+                                            </a>
+                                        </div><!-- End .col-6 -->
+                                    </div><!-- End .row -->
+                                </div><!-- End .form-choice -->
+                            </div><!-- .End .tab-pane -->
+                            <div aria-labelledby="register-tab" class="tab-pane fade" id="register" role="tabpanel">
+                                <form action="#">
+                                    <div class="form-group">
+                                        <label for="register-email">Your email address *</label>
+                                        <input class="form-control" id="register-email" name="register-email" required
+                                            type="email">
+                                    </div><!-- End .form-group -->
+                                    <div class="form-group">
+                                        <label for="register-password">Password *</label>
+                                        <input class="form-control" id="register-password" name="register-password"
+                                            required type="password">
+                                    </div><!-- End .form-group -->
+                                    <div class="form-footer">
+                                        <button class="btn btn-outline-primary-2" type="submit">
+                                            <span>SIGN UP</span>
+                                            <i class="icon-long-arrow-right"></i>
+                                        </button>
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input" id="register-policy" required
+                                                type="checkbox">
+                                            <label class="custom-control-label" for="register-policy">I agree to the <a
+                                                    href="#">privacy policy</a> *</label>
+                                        </div><!-- End .custom-checkbox -->
+                                    </div><!-- End .form-footer -->
+                                </form>
+                                <div class="form-choice">
+                                    <p class="text-center">or sign in with</p>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <a class="btn btn-login btn-g" href="#">
+                                                <i class="icon-google"></i>
+                                                Login With Google
+                                            </a>
+                                        </div><!-- End .col-6 -->
+                                        <div class="col-sm-6">
+                                            <a class="btn btn-login  btn-f" href="#">
+                                                <i class="icon-facebook-f"></i>
+                                                Login With Facebook
+                                            </a>
+                                        </div><!-- End .col-6 -->
+                                    </div><!-- End .row -->
+                                </div><!-- End .form-choice -->
+                            </div><!-- .End .tab-pane -->
+                        </div><!-- End .tab-content -->
+                    </div><!-- End .form-tab -->
+                </div><!-- End .form-box -->
+            </div><!-- End .modal-body -->
+        </div><!-- End .modal-content -->
+    </div><!-- End .modal-dialog -->
+</div><!-- End .modal -->
+
+<!-- ###################################################################################################/ -->
+
+<script>
+    let choose_address_id = 1
+    var payment_method = 'cod'
+    paypal_option = document.getElementById('paypal');
+    cod_option = document.getElementById('cod');
+    razorpay_option = document.getElementById('razorpay');
+    function cod() {
+        console.log('its cod')
+        $.ajaxSetup({
+            data: { csrfmiddlewaretoken: '{{csrf_token}}' },
+        });
+        $.ajax({
+            url: '/user_paypal_place_order',
+            method: 'post',
+            data: { 'address_id': 1, 'payment_method': 'cod' },
+            success: function (response) {
+                console.log('you have placed the order (from ajax)')
+                window.location.href = '/user_thankyou_for_order'
+            }
+        })
+    }
+    function apply_coupon() {
+        document.getElementById('discount').style.display = 'none'
+        coupon = document.getElementById('coupon').value
+        $.ajaxSetup({
+            data: { csrfmiddlewaretoken: '{{csrf_token}}' },
+        });
+        $.ajax({
+            url: '/user_validate_coupon',
+            method: 'post',
+            data: { 'coupon': coupon },
+            success: function (response) {
+                if (response['status'] == 'success') {
+                    document.getElementById('message').innerText = ''
+                    document.getElementById('update_discount').innerText = response['discount']
+                    document.getElementById('update_discount_total').innerText = response['discount']
+                    console.log('you have applied the coupon (from ajax)')
+                    document.getElementById('discount').style.display = 'none'
+                }
+                else if (response['status'] == 'failed') {
+                    console.log('wrong coupon')
+                    alert('wrong coupon')
+                    document.getElementById('message').innerText = ' wrong coupon '
+                }
+                else if (response['status'] == 'used') {
+                    console.log('used coupon')
+                    alert('used coupon')
+                    document.getElementById('message').innerText = ' you can only use this coupon once. '
+                }
+            }
+        })
+        console.log(coupon)
+    }
+    function address_change(address_id) {
+        choose_address_id = address_id
+        // console.log(choose_address_id)
+    }
+</script>
+<script src="{% static 'admin_assets/vendor/apexcharts/apexcharts.min.js'%}"></script>
+<script src="{% static 'admin_assets/vendor/bootstrap/js/bootstrap.bundle.min.js'%}"></script>
+<script src="{% static 'admin_assets/vendor/chart.js/chart.min.js'%}"></script>
+<script src="{% static 'admin_assets/vendor/echarts/echarts.min.js'%}"></script>
+<script src="{% static 'admin_assets/vendor/quill/quill.min.js'%}"></script>
+<script src="{% static 'admin_assets/vendor/simple-datatables/simple-datatables.js'%}"></script>
+<script src="{% static 'admin_assets/vendor/tinymce/tinymce.min.js'%}"></script>
+<script src="{% static 'admin_assets/vendor/php-email-form/validate.js'%}"></script>
+<!-- Template Main JS File -->
+<script src="{% static 'admin_assets/js/main.js'%}"></script>
+{% endblock %}

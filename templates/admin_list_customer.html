@@ -1,0 +1,112 @@
+{% extends 'admin_base.html' %}
+{% block content %}
+
+<!-- ======= Sidebar ======= -->
+
+<head>
+  <style>
+    #table_title {
+      color: rgb(5, 5, 6);
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<main id="main" class="main">
+  <div class="pagetitle">
+    <h1>Control Users</h1>
+  </div><!-- End Page Title -->
+  <section class="section">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title"></h5>
+            <!--////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
+            <!-- Default Table -->
+            <table class="table" id="table_title">
+              <thead>
+                <tr>
+                  <th scope="col">UserName</th>
+                  <th scope="col">Contact</th>
+                  <th scope="col">Block</th>
+                </tr>
+              </thead>
+              <!--                /////////////////////////////////////////////////////////////////////////////-->
+              <tbody>
+                {% for user in users %}
+                <tr>
+                  <td>{{user.full_name}}</td>
+                  <td>{{user.contact_number}}</td>
+                  <td>
+                    <div class="form-check form-switch">
+                      {% if user.active_status == 'active' %}
+                      <input class="form-check-input" type="checkbox" id="active{{user.email}}"
+                        onchange="update_status('{{user.email}}')">
+                      {% else %}
+                      <input class="form-check-input" type="checkbox" id="active{{user.email}}"
+                        onchange="update_status('{{user.email}}')" checked>
+                      {% endif %}
+                    </div>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <form action="/admin_list_customer" method="POST">
+      {% csrf_token %}
+       <nav aria-label="Page navigation example">
+      <ul class="pagination" >
+        <li class="page-item " id="disable_p">
+          <button class="page-link" type="submit" name="page_number" value="{{current_page|add:'-1'}}" onmouseover="if(this.value == '0'){document.getElementById('disable_p').classList.add('disabled')}">Previous</button>
+        </li>
+        
+        {% for i in available_pages %}
+          <li class="page-item">
+            <input type="text" name="duration" value="{{duration}}"  style="display: none;">
+    <input value ='{{forloop.counter}}' class="page-link" type="submit" name="page_number"></li>
+        {% endfor %}
+        <li class="page-item" id="disable_n">
+          <button class="page-link" type="submit" name="page_number" value="{{current_page|add:'1'}}" onmouseover="if(this.value > '{{available_pages|length}}'){document.getElementById('disable_n').classList.add('disabled')}">Next</button>
+        </li>
+      </ul>
+    </nav><!-- End Left/Start Pagination -->
+    </form>
+</main><!-- End #main -->
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+
+<script>
+  $(document).ready(function () {
+    console.log('your document is ready');
+  })
+  function update_status(email) {
+    status = document.getElementById('active' + email).checked
+   
+    $.ajaxSetup({
+      data: { csrfmiddlewaretoken: '{{csrf_token}}' },
+    });
+    $.ajax({
+      url: '/admin_update_user_status',
+      data: { 'status': status, 'email': email },
+      method: 'POST',
+      success: function (response) {
+        if (response['status'] == 'block') {
+          console.log('user blocked successfully')
+        }
+        else if (response['status'] == 'active') {
+          console.log('user is now active')
+        }
+      },
+      error: function () {
+        console.log('ajax is not working')
+      }
+    });
+  };
+</script>
+
+{%endblock%}

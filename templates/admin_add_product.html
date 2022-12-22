@@ -1,0 +1,178 @@
+{% extends 'admin_base.html' %}
+{% block content %}
+{% load static %}
+<!-- ======= Header ======= -->
+
+<head>
+  <style>
+    .label {
+      color: rgb(93, 89, 89);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      font-size: 1rem;
+    }
+
+  </style>
+</head>
+<!-- ======= Sidebar ======= -->
+<main id="main" class="main">
+  <div class="pagetitle">
+    <h1 style="color: rgb(0, 0, 0);">Add your Products</h1>
+  </div><!-- End Page Title -->
+  <!-- checking whether there are any category available -->
+  <!-- add product wont be shown if there are no products -->
+  {% if form_categories %}
+  <section class="section">
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12">
+        <div class="card" style="background-color: rgb(255, 255, 255);">
+          <div class="card-body">
+            <h5 class="card-title" style="margin-bottom: 0px;color:rgb(0, 0, 0);margin-bottom: 0px;">Make sure the
+              details are correct</h5>
+            <p
+              style="color: rgb(129, 131, 139);font-weight:normal ;margin-top: 0px;margin-bottom: 2%;color:rgb(0, 0, 0);font-size: 13px;">
+              Enter the information of the product exactly as it is</p>
+            <hr style="background-color: black;height: 2px;">
+            <!-- user data  -->
+            <form method="POST" enctype="multipart/form-data" id="formUpload"
+              style="color: rgb(83, 83, 83);font-weight:bold ;background-color: rgb(255, 255, 255);padding: 5%;border-radius: 10px;">
+              {% csrf_token %}
+              <!--######################################### -->
+          <div class="col-md-12" style="display:flex;justify-content:space-between;margin-top:10px;">
+              <label class="form-label label">NAME</label>
+              {{form.name}}
+          </div>
+          <hr>
+          <div class="col-md-12" style="display:flex;justify-content:space-between;margin-top:10px;">
+            <label class="form-label label">DESCRIPTION</label>
+            {{form.description}}
+          </div>
+          <hr>
+          <div class="col-12" style="display:flex;justify-content:space-between;margin-top:10px;">
+            <label class="form-label label">CATEGORY</label>
+            <select name="category" style="padding: 10px;border-radius: 10px;">
+              {% for category in form_categories %}
+              <option selected>{{ category.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <hr>
+          <div class="col-12" style="display:flex;justify-content:space-between;margin-top:10px;">
+            <label class="form-label label">SPECIFICATION</label>
+            {{form.specification}}
+          </div>
+          <div class="col-md-12" style="display:flex;justify-content:space-between;margin-top:10px;">
+            <label class="form-label label">STOCK AVAILABLE</label>
+            {{form.stock_available}}
+          </div>
+          <div class="col-md-12" style="display:flex;justify-content:space-between;margin-top:10px;">
+            <label class="form-label label">IS TRUSTED</label>
+            {{form.is_trusted}}
+          </div>
+          <div class="col-md-12" style="display:flex;justify-content:space-between;margin-top:10px;">
+            <label class="form-label label">PRODUCT STATUS</label>
+            {{form.available_status}}
+          </div>
+          <div class="col-md-12" style="display:flex;justify-content:space-between;margin-top:10px;">
+            <label class="form-label label">MANUFACTURING DATE</label>
+            {{form.manufacturing_date}}
+          </div>
+          <div class="col-md-12" style="display:flex;justify-content:space-between;margin-top:10px;">
+            <label class="form-label label">PRICE</label>
+            {{form.price}}
+          </div>
+          <button type="submit" style="margin-top: 50px;" class="btn btn-primary">SUBMIT</button>
+        </div>
+        </form>
+      </div>
+    </div>
+  </section>
+  <!-- the below content will be shown to the users if the categories are not available -->
+  {% else %}
+  <div>
+    <div style="text-align: center;margin: 30px;">
+      <img src="/media/message_images/no data.png" width="30%">
+    </div>
+    <div style="color: black;text-align: center;font-size: 20px;">Oops! you need atleast one category to add a product
+    </div>
+    <p style="color: rgb(133, 127, 127);text-align: center;">
+      please come back after adding a category.
+    </p>
+  </div>
+  {% endif %}
+  <!-- end of the if condition and the main function -->
+</main>
+<!-- End #main -->
+<!-- begining of the script -->
+<script>
+
+  function validate() {
+    // this function is used to validate the user input and make sure all the fields are perfect
+    console.log('validating input fields...')
+    console.log('gathering data from fields...')
+    name = document.getElementById('name').value
+    description = document.getElementById('description').value
+    category = document.getElementById('category').value
+    specification = document.getElementById('specification').value
+    stock_available = document.getElementById('stock_available').value
+    rating = document.getElementById('rating').value
+    total_sold = document.getElementById('total_sold').value
+    is_trusted = document.getElementById('is_trusted').value
+    available_status = document.getElementById('available_status').value
+    arrival_date = document.getElementById('arrival_date').value
+    end_date = document.getElementById('end_date').value
+    image_1 = document.getElementById('image_1')
+    image_2 = document.getElementById('image_2')
+    image_3 = document.getElementById('image_3')
+    image_4 = document.getElementById('image_4')
+    console.log('gathering data successful.');
+    console.log('starting validation.');
+    if (name == '') { document.getElementById('message').innerHTML = 'name cannot be empty' }
+    else if (description == '') { document.getElementById('message').innerHTML = 'description cannot be empty' }
+    else if (description.length < 5 || description.length > 10) { document.getElementById('message').innerHTML = 'description must be between 5 to 10 charecters' }
+    else if (category == '') { document.getElementById('message').innerHTML = 'category cannot be empty' }
+    else if (specification == '') { document.getElementById('message').innerHTML = 'specification cannot be empty' }
+    else if (stock_available == '') { document.getElementById('message').innerHTML = 'stock_available cannot be empty' }
+    else if (rating == '') { document.getElementById('message').innerHTML = 'rating cannot be empty' }
+    else if (total_sold == '') { document.getElementById('message').innerHTML = 'total_sold cannot be empty' }
+    else {
+      document.getElementById('message').innerHTML = ''
+      console.log('everything looks perfect successful.')
+      console.log('Calling upload function...')
+      upload_new_product()
+    }
+  }
+  function upload_new_product() {
+    console.log('Trying to upload the new product to the database...')
+    $.ajaxSetup({
+      data: { csrfmiddlewaretoken: '{{csrf_token}}' }
+    })
+    console.log('ajax setup complete...')
+    console.log('ajax trying to send data to admin_add_product in views.py...')
+    $.ajax({
+      url: '/admin_add_product',
+      method: 'post',
+      data: {
+        'name': name,
+        'description': description,
+        'category': category,
+        'specification': specification,
+        'stock_available': stock_available,
+        'rating': rating,
+        'total_sold': total_sold,
+        'is_trusted': is_trusted,
+        'available_status': available_status,
+        'end_date': end_date,
+        'image_1': image_1,
+        'image_2': image_2,
+        'image_3': image_3,
+        'image_4': image_4,
+      },
+      success: function (response) {
+        if (response['status']) {
+          console.log('product_added_successfuly')
+        }
+      }
+    })
+  }
+</script>
+{%endblock%}

@@ -1,0 +1,77 @@
+{% extends 'user_base.html' %}
+{% block content %}
+{% load static %}
+<head>
+    <style>
+        .title{
+            color: black;
+            font-weight: bold;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<div style="text-align: center;" >
+    <label style="font-size: 25px;">Wallet</label>
+    <p>Ask wallet where is your balance</p>
+    <div style="font-size: 30px;">
+ Balance Rs.{{wallet_balance}}
+    </div>
+<label>user wallet history</label>
+{% if user_wallet_history|length > 0 %}
+<section style="display: flex;justify-content: space-around;">
+<div>
+    <div class="title">Image</div>
+    {% for image in user_wallet_history %}
+    <div><img src="/media/{{image.order_id.product.image_1}}" width="50px"></div>
+    {% endfor %}
+</div>
+<div>
+    <div class="title">Name</div>
+    {% for name in user_wallet_history%}
+    <div>{{name.order_id.product.name}}</div>
+    {% endfor %}
+</div>
+<div>
+    <div class="title">Payment Method</div>
+    {% for payment_method in user_wallet_history%}
+    <div>{{payment_method.order_id.payment_method}}</div>
+    {% endfor %}
+</div>
+<div>
+    <div class="title">Amount</div>
+    {% for amount in user_wallet_history%}
+    <div>{{amount.order_id.total_price}}</div>
+    {% endfor %}
+</div>
+<div>
+    <div class="title">Debit/Credit</div>
+    {% for Debit_Credit in user_wallet_history%}
+    <div>{{Debit_Credit.Debit_Credit}}</div>
+    {% endfor %}
+</div>
+
+   </section>
+   {% else %}
+   <br>
+<label>You have done zero transactions through your wallet</label>
+   {% endif %}
+</div>
+    
+<script>
+    function update_wallet(){
+        user_entered_amount = document.getElementById('wallet_upgrade').value
+        console.log(user_entered_amount);
+        $.ajaxSetup({
+            data:{csrfmiddlewaretoken:'{{csrf_token }}'}
+        })
+        $.ajax({
+            url:'/user_wallet',
+            method:'post',
+            data:{'user_entered_amount':user_entered_amount},
+            success:function(){
+                console.log('wallet updated')
+            }
+        })
+    }
+</script>
+{% endblock %}

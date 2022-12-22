@@ -1,0 +1,678 @@
+{% extends 'user_base.html' %}
+{% block content %}
+{% load static %}
+
+<head>
+    <style>
+        .cat {
+            margin-top: 10px;
+            width: 10%;
+            border: 1px solid rgb(176, 176, 176);
+            padding: 5px;
+            color: rgb(169, 165, 165);
+            border-radius: 10px;
+           
+
+        }
+
+        .cat:hover {
+            size: 30%;
+            background-color: rgb(255, 255, 255);
+            border-radius: 10px;
+            box-shadow: 0px 10px 10px 10px;
+
+        }
+
+        .orginal_price {
+            color: rgb(99, 94, 94);
+        }
+
+        .total_price {
+            color: black;
+            font-weight: bold;
+            font-size: 20px;
+        }
+        .image_p{
+            border-radius: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page-wrapper">
+
+
+        <main class="main">
+            <div class="intro-slider-container" style="height: 100%;padding: 0px;margin:20px;border-radius: 20px;border: 2px solid rgb(255, 255, 255);">
+                <div class="owl-carousel owl-simple owl-light owl-nav-inside" data-toggle="owl"
+                    data-owl-options='{"nav": true}' style="height: 100%;" >
+
+                    <div class="intro-slide" style="background-image: url('/media/{{banner1.image}}');height: 30vw;border-radius: 20px;">
+                        <div class="container intro-content">
+                            <h3 class="intro-subtitle">{{banner1.heading}}</h3><!-- End .h3 intro-subtitle -->
+                            <h1 class="intro-title">{{banner1.description}}</h1><!-- End .intro-title -->
+
+                        </div><!-- End .container intro-content -->
+                    </div><!-- End .intro-slide -->
+                    <div class="intro-slide" style="background-image: url('/media/{{banner2.image}}');height: 30vw;border-radius: 20px;">
+                        <div class="container intro-content">
+                            <h3 class="intro-subtitle">{{banner2.heading}}</h3><!-- End .h3 intro-subtitle -->
+                            <h1 class="intro-title">{{banner2.description}}
+                            </h1><!-- End .intro-title -->
+
+                        </div><!-- End .container intro-content -->
+                    </div><!-- End .intro-slide -->
+
+                    <div class="intro-slide" style="background-image: url('/media/{{banner3.image}}');height:30vw;border-radius: 20px;">
+                        <div class="container intro-content">
+                            <h3 class="intro-subtitle">{{banner3.heading}}</h3><!-- End .h3 intro-subtitle -->
+                            <h1 class="intro-title">{{banner3.description}}
+                            </h1><!-- End .intro-title -->
+
+
+                        </div><!-- End .container intro-content -->
+                    </div><!-- End .intro-slide -->
+                </div><!-- End .owl-carousel owl-simple -->
+
+                <span class="slider-loader text-white"></span><!-- End .slider-loader -->
+            </div><!-- End .intro-slider-container -->
+<div style="text-align: center;"></div>
+<hr>
+            <div style="display:flex;flex-direction: row;display: flex;justify-content: space-evenly;margin-top:2%;" class="container-fluid">
+                {% for category in categories %}
+                <div class="cat col-lg-1">
+                    <a href="/user_category_view/{{category.name}}" class="brand"
+                        style="display: flex;flex-direction: column;">
+                        <img src="/media/{{category.image}}" 
+                            alt="brand" >
+                        <!-- <p>{{category.name}}</p>
+                        <span style="color: rgb(108, 102, 102);font-weight: bold;">{{category.offer_percentage}}%
+                            off</span> -->
+                    </a>
+                </div><!-- End .owl-carousel -->
+                {% endfor %}
+            </div>
+<hr>
+            <div class="mb-3 mb-lg-5"></div><!-- End .mb-3 mb-lg-5 -->
+
+            {% comment %} <div class="banner-group">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12 col-lg-5">
+                            <div class="banner banner-large banner-overlay banner-overlay-light">
+                                <a href="#">
+                                    <img src="{% static 'assets/images/demos/demo-2/banners/banner-1.jpg'%}"
+                                        alt="Banner">
+                                </a>
+
+                                <div class="banner-content banner-content-top">
+                                    <h4 class="banner-subtitle">Clearence</h4><!-- End .banner-subtitle -->
+                                    <h3 class="banner-title">Led Lights</h3><!-- End .banner-title -->
+                                    <div class="banner-text">from Rs 100</div><!-- End .banner-text -->
+                                    <a href="#" class="btn btn-outline-gray banner-link">Shop Now<i
+                                            class="icon-long-arrow-right"></i></a>
+                                </div><!-- End .banner-content -->
+                            </div><!-- End .banner -->
+                        </div><!-- End .col-lg-5 -->
+
+                        <div class="col-md-6 col-lg-3">
+                            <div class="banner banner-overlay">
+                                <a href="#">
+                                    <img src="{% static 'assets/images/demos/demo-2/banners/banner-2.jpg' %}"
+                                        alt="Banner">
+                                </a>
+
+                                <div class="banner-content banner-content-bottom">
+                                    <h4 class="banner-subtitle text-grey">On Sale</h4><!-- End .banner-subtitle -->
+                                    <h3 class="banner-title text-white">Amazing <br>Microcontrollers</h3>
+                                    <!-- End .banner-title -->
+                                    <div class="banner-text text-white">from Rs 500</div><!-- End .banner-text -->
+                                    <a href="#" class="btn btn-outline-white banner-link">Discover Now<i
+                                            class="icon-long-arrow-right"></i></a>
+                                </div><!-- End .banner-content -->
+                            </div><!-- End .banner -->
+                        </div><!-- End .col-lg-3 -->
+
+                        <div class="col-md-6 col-lg-4">
+                            <div class="banner banner-overlay">
+                                <a href="#">
+                                    <img src="{% static 'assets/images/demos/demo-2/banners/banner-3.jpg' %}"
+                                        alt="Banner">
+                                </a>
+
+                                <div class="banner-content banner-content-top">
+                                    <h4 class="banner-subtitle text-grey">New Arrivals</h4><!-- End .banner-subtitle -->
+                                    <h3 class="banner-title text-white">Advanced <br>Modules</h3>
+                                    <!-- End .banner-title -->
+                                    <a href="#" class="btn btn-outline-white banner-link">Discover Now<i
+                                            class="icon-long-arrow-right"></i></a>
+                                </div><!-- End .banner-content -->
+                            </div><!-- End .banner -->
+
+                            <div class="banner banner-overlay banner-overlay-light">
+                                <a href="#">
+                                    <img src="{% static 'assets/images/demos/demo-2/banners/banner-4.jpg' %}"
+                                        alt="Banner">
+                                </a>
+
+                                <div class="banner-content banner-content-top">
+                                    <h4 class="banner-subtitle">On Sale</h4><!-- End .banner-subtitle -->
+                                    <h3 class="banner-title">Lamps Offer</h3><!-- End .banner-title -->
+                                    <div class="banner-text">up to 30% off</div><!-- End .banner-text -->
+                                    <a href="#" class="btn btn-outline-gray banner-link">Shop Now<i
+                                            class="icon-long-arrow-right"></i></a>
+                                </div><!-- End .banner-content -->
+                            </div><!-- End .banner -->
+                        </div><!-- End .col-lg-4 -->
+                    </div><!-- End .row -->
+                </div><!-- End .container -->
+            </div><!-- End .banner-group --> {% endcomment %}
+
+            <div class="mb-3"></div><!-- End .mb-6 -->
+
+            <div class="container">
+                <ul class="nav nav-pills nav-border-anim nav-big justify-content-center mb-3" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="products-featured-link" data-toggle="tab"
+                            href="#products-featured-tab" role="tab" aria-controls="products-featured-tab"
+                            aria-selected="true">Trusted</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="products-sale-link" data-toggle="tab" href="#products-sale-tab"
+                            role="tab" aria-controls="products-sale-tab" aria-selected="false">Best Offers</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="products-top-link" data-toggle="tab" href="#products-top-tab" role="tab"
+                            aria-controls="products-top-tab" aria-selected="false">Top Rated</a>
+                    </li>
+                </ul>
+            </div><!-- End .container -->
+
+            <div class="container-fluid">
+                <div class="tab-content tab-content-carousel">
+                    <div class="tab-pane p-0 fade show active" id="products-featured-tab" role="tabpanel"
+                        aria-labelledby="products-featured-link">
+                        <div class="owl-carousel owl-simple carousel-equal-height carousel-with-shadow"
+                            data-toggle="owl" data-owl-options='{
+                                "nav": false, 
+                                "dots": true,
+                                "margin": 20,
+                                "loop": false,
+                                "responsive": {
+                                    "0": {
+                                        "items":2
+                                    },
+                                    "480": {
+                                        "items":2
+                                    },
+                                    "768": {
+                                        "items":3
+                                    },
+                                    "992": {
+                                        "items":4
+                                    },
+                                    "1200": {
+                                        "items":5
+                                    },
+                                    "1600": {
+                                        "items":6,
+                                        "nav": true
+                                    }
+                                }
+                            }'>
+
+
+                            <!-- Featured product tab start -->
+                            {% for product in trusted_products %}
+                            <div class="product product-11 text-center col-lg-10">
+                                <figure class="product-media">
+                                    <a href="/user_product_detail/{{product.id}}">
+                                        <img src="/media/{{product.image_1}}" alt="Product image" class="product-image image_p" >
+                                        <img src="/media/{{product.image_2}}" alt="Product image"
+                                            class="product-image-hover">
+                                    </a>
+                                    
+                                </figure><!-- End .product-media -->
+                                <div class="product-body" style="margin: 0px;padding:0px">
+                                    <h3 class="product-title"><a href="/">{{product.name}}</a></h3>
+                                    <!-- End .product-title -->
+
+
+                                    <div class="product-price">
+                                        <div style="color: red;">-<span
+                                                class="offer">{{product.offer_percentage}}</span>%</div>
+                                    </div><!-- End .product-price -->
+                                    <div><span style="color: rgb(93, 87, 87);"><s>Rs.<span
+                                                    class="orginal_price">{{product.price}}</span></s></span> Rs.<span
+                                            class="total_price">total_price</span></div>
+                                </div><!-- End .product-body -->
+                                <div>
+                                    Trusted
+                                </div>
+                               
+                            </div><!-- End .product -->
+
+                            <!-- end product tab -->
+                            {% endfor %}
+                        </div><!-- End .owl-carousel -->
+                    </div><!-- .End .tab-pane -->
+
+
+                    <div class="tab-pane p-0 fade" id="products-sale-tab" role="tabpanel"
+                        aria-labelledby="products-sale-link">
+                        <div class="owl-carousel owl-simple carousel-equal-height carousel-with-shadow"
+                            data-toggle="owl" data-owl-options='{
+                                "nav": false, 
+                                "dots": false,
+                                "margin": 10,
+                                "loop": false,
+                                "responsive": {
+                                    "0": {
+                                        "items":2
+                                    },
+                                    "480": {
+                                        "items":2
+                                    },
+                                    "768": {
+                                        "items":3
+                                    },
+                                    "992": {
+                                        "items":4
+                                    },
+                                    "1200": {
+                                        "items":5
+                                    },
+                                    "1600": {
+                                        "items":6,
+                                        "nav": true
+                                    }
+                                }
+                            }'>
+
+                            <!-- on sale products start -->
+                            {% for product in best_offer_products %}
+                            {% if product.offer_percentage > 20 %}
+                            <div class="product product-11 text-center col-lg-10">
+                                <figure class="product-media">
+                                    <a href="/user_product_detail/{{product.id}}">
+                                        <img src="/media/{{product.image_1}}" alt="Product image" class="product-image image_p">
+                                        <img src="/media/{{product.image_2}}" alt="Product image"
+                                            class="product-image-hover image_p">
+                                    </a>
+                                    <!-- <div class="product-action-vertical">
+                                        <a href="#" class="btn-product-icon btn-wishlist"><span>add to
+                                                wishlist</span></a>
+                                    </div>End .product-action-vertical -->
+                                </figure><!-- End .product-media -->
+                                <div class="product-body" style="padding: 0px;margin: 0px;">
+                                    <h3 class="product-title"><a href="/">{{product.name}}</a></h3>
+                                    <!-- End .product-title -->
+
+                                    <div class="product-price">
+                                        <div style="color: red;"><span
+                                                class="offer">{{product.offer_percentage}}</span>% off</div>
+                                    </div><!-- End .product-price -->
+                                    <div><span style="color: red;"><s>Rs.<span
+                                                    class="orginal_price">{{product.price}}</span></s></span> Rs.<span
+                                            class="total_price">total_price</span></div>
+
+                                </div><!-- End .product-body -->
+                                <div>
+                                    Best Offer
+                                </div>
+                            </div><!-- End .product -->
+                            <!-- end on sale -->
+                         {% endif %}
+                            {% endfor %}
+                        </div><!-- End .owl-carousel -->
+                    </div><!-- .End .tab-pane -->
+                    <div class="tab-pane p-0 fade" id="products-top-tab" role="tabpanel"
+                        aria-labelledby="products-top-link">
+                        <div class="owl-carousel owl-simple carousel-equal-height carousel-with-shadow"
+                            data-toggle="owl" data-owl-options='{
+                                "nav": false, 
+                                "dots": true,
+                                "margin": 20,
+                                "loop": false,
+                                "responsive": {
+                                    "0": {
+                                        "items":2
+                                    },
+                                    "480": {
+                                        "items":2
+                                    },
+                                    "768": {
+                                        "items":3
+                                    },
+                                    "992": {
+                                        "items":4
+                                    },
+                                    "1200": {
+                                        "items":5
+                                    },
+                                    "1600": {
+                                        "items":6,
+                                        "nav": true
+                                    }
+                                }
+                            }'>
+
+                            <!-- top rated products start -->
+                            {% for product in rated_products %}
+                            <div class="product product-11 text-center">
+                                <figure class="product-media">
+                                    <a href="/user_product_detail/{{product.id}}">
+                                        <img src="/media/{{product.image_1}}" alt="Product image" class="product-image">
+                                        <img src="/media/{{product.image_2}}" alt="Product image"
+                                            class="product-image-hover">
+                                    </a>
+
+                                    <div class="product-action-vertical">
+                                        <a href="#" class="btn-product-icon btn-wishlist"><span>add to
+                                                wishlist</span></a>
+                                    </div><!-- End .product-action-vertical -->
+                                </figure><!-- End .product-media -->
+
+                                <div class="product-body">
+                                    <h3 class="product-title"><a href="/">{{product.name}}</a></h3>
+
+
+                                    <div class="product-price">
+                                        <div style="color: red;"><span
+                                                class="offer">{{product.offer_percentage}}</span>% off</div>
+                                    </div><!-- End .product-price -->
+                                    <div><span style="color: red;"><s>Rs.<span
+                                                    class="orginal_price">{{product.price}}</span></s></span> Rs.<span
+                                            class="total_price">total_price</span></div>
+
+                           
+                            </div><!-- End .product -->
+                            <div>
+                                Rated
+                            </div>
+                            </div>
+                            {% endfor %}
+                            <!-- top rated products end -->
+                        </div><!-- End .owl-carousel -->
+                    </div><!-- .End .tab-pane -->
+                </div><!-- End .tab-content -->
+            </div><!-- End .container-fluid -->
+
+        
+           
+
+            <div class="mb-6"></div><!-- End .mb-6 -->
+
+            <div class="container">
+                <div class="heading heading-center mb-3">
+                    <h2 class="title">Products</h2><!-- End .title -->
+
+                    
+                </div><!-- End .heading -->
+                <div class="tab-content">
+                    <div class="tab-pane p-0 fade show active" id="top-all-tab" role="tabpanel"
+                        aria-labelledby="top-all-link">
+                        <div class="products">
+                            <div class="row justify-content-center">
+                                {% for product in products %}
+
+                                <div class="col-6 col-md-4 col-lg-3 col-xl-5col">
+                                    <div class="product product-11 text-center">
+                                        <figure class="product-media">
+                                            <a href="/user_product_detail/{{product.id}}">
+                                                <img src="media/{{product.image_1}}" alt="Product image"
+                                                    class="product-image">
+                                                <img src="media/{{product.image_2}}" alt="Product image"
+                                                    class="product-image-hover">
+                                            </a>
+                                            <div class="product-action-vertical">
+                                                <a href="#" class="btn-product-icon btn-wishlist "><span>add to
+                                                        wishlist</span></a>
+                                            </div><!-- End .product-action-vertical -->
+                                        </figure><!-- End .product-media -->
+                                        <div class="product-body">
+                                            <div class="product-cat">
+                                                <a
+                                                    href="/user_category_view/{{product.category}}">{{product.category}}</a>
+                                            </div><!-- End .product-cat -->
+                                            <h3 class="product-title"><a href="product.html">{{product.name}}</a></h3>
+                                            <!-- End .product-title -->
+
+                                            <div class="product-price">
+                                                <div style="color: red;">-<span
+                                                        class="offer">{{product.offer_percentage}}</span>%</div>
+                                            </div><!-- End .product-price -->
+                                            <div><span><s>MRP.<span
+                                                            class="orginal_price">{{product.price}}</span></s></span>
+                                                Rs.<span class="total_price">total_price</span></div>
+
+
+
+                                        </div><!-- End .product-body -->
+                                        
+                                    </div><!-- End .product -->
+                                </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
+
+                                {% endfor %}
+                            </div><!-- End .row -->
+                        </div><!-- End .products -->
+                    </div><!-- .End .tab-pane -->
+                </div><!-- End .tab-content -->
+            </div><!-- End .container -->
+           
+        </main><!-- End .main -->
+
+        <footer class="footer footer-2">
+            <div class="icon-boxes-container">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="icon-box icon-box-side">
+                                <span class="icon-box-icon text-dark">
+                                    <i class="icon-rocket"></i>
+                                </span>
+                                <div class="icon-box-content">
+                                    <h3 class="icon-box-title">Free Shipping</h3><!-- End .icon-box-title -->
+                                    <p>orders $50 or more</p>
+                                </div><!-- End .icon-box-content -->
+                            </div><!-- End .icon-box -->
+                        </div><!-- End .col-sm-6 col-lg-3 -->
+
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="icon-box icon-box-side">
+                                <span class="icon-box-icon text-dark">
+                                    <i class="icon-rotate-left"></i>
+                                </span>
+
+                                <div class="icon-box-content">
+                                    <h3 class="icon-box-title">Free Returns</h3><!-- End .icon-box-title -->
+                                    <p>within 30 days</p>
+                                </div><!-- End .icon-box-content -->
+                            </div><!-- End .icon-box -->
+                        </div><!-- End .col-sm-6 col-lg-3 -->
+
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="icon-box icon-box-side">
+                                <span class="icon-box-icon text-dark">
+                                    <i class="icon-info-circle"></i>
+                                </span>
+
+                                <div class="icon-box-content">
+                                    <h3 class="icon-box-title">Get 20% Off 1 Item</h3><!-- End .icon-box-title -->
+                                    <p>When you sign up</p>
+                                </div><!-- End .icon-box-content -->
+                            </div><!-- End .icon-box -->
+                        </div><!-- End .col-sm-6 col-lg-3 -->
+
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="icon-box icon-box-side">
+                                <span class="icon-box-icon text-dark">
+                                    <i class="icon-life-ring"></i>
+                                </span>
+
+                                <div class="icon-box-content">
+                                    <h3 class="icon-box-title">We Support</h3><!-- End .icon-box-title -->
+                                    <p>24/7 amazing services</p>
+                                </div><!-- End .icon-box-content -->
+                            </div><!-- End .icon-box -->
+                        </div><!-- End .col-sm-6 col-lg-3 -->
+                    </div><!-- End .row -->
+                </div><!-- End .container -->
+            </div><!-- End .icon-boxes-container -->
+
+            <div class="footer-newsletter bg-image" style="background-image: url('media/{{banner.image}}')">
+                <div class="container">
+                    <div class="heading text-center">
+                        <h3 class="title">Get The Latest Deals</h3><!-- End .title -->
+                        <p class="title-desc">and receive <span>$20 coupon</span> for first shopping</p>
+                        <!-- End .title-desc -->
+                    </div><!-- End .heading -->
+
+                    <div class="row">
+                        <div class="col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
+                            <form action="#">
+                                <div class="input-group">
+                                    <input type="email" class="form-control" placeholder="Enter your Email Address"
+                                        aria-label="Email Adress" aria-describedby="newsletter-btn" required>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary" type="submit"
+                                            id="newsletter-btn"><span>Subscribe</span><i
+                                                class="icon-long-arrow-right"></i></button>
+                                    </div><!-- .End .input-group-append -->
+                                </div><!-- .End .input-group -->
+                            </form>
+                        </div><!-- End .col-sm-10 offset-sm-1 col-lg-6 offset-lg-3 -->
+                    </div><!-- End .row -->
+                </div><!-- End .container -->
+            </div><!-- End .footer-newsletter bg-image -->
+
+            <div class="footer-middle">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-12 col-lg-6">
+                            <div class="widget widget-about">
+                               
+                                <p>Praesent dapibus, neque id cursus ucibus, tortor neque egestas augue, eu vulputate
+                                    magna
+                                    eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor,
+                                    facilisis luctus, metus. </p>
+
+                                <div class="widget-about-info">
+                                    <div class="row">
+                                        <div class="col-sm-6 col-md-4">
+                                            <span class="widget-about-title">Got Question? Call us 24/7</span>
+                                            <a href="tel:123456789">+0123 456 789</a>
+                                        </div><!-- End .col-sm-6 -->
+                                        <div class="col-sm-6 col-md-8">
+                                            <span class="widget-about-title">Payment Method</span>
+                                            <figure class="footer-payments">
+                                                <img src="{% static 'assets/images/payments.png' %}"
+                                                    alt="Payment methods" width="272" height="20">
+                                            </figure><!-- End .footer-payments -->
+                                        </div><!-- End .col-sm-6 -->
+                                    </div><!-- End .row -->
+                                </div><!-- End .widget-about-info -->
+                            </div><!-- End .widget about-widget -->
+                        </div><!-- End .col-sm-12 col-lg-3 -->
+
+
+                        <div class="col-sm-4 col-lg-2">
+                            <div class="widget">
+                                <h4 class="widget-title">My Account</h4><!-- End .widget-title -->
+
+                                <ul class="widget-list">
+                                    <!-- <li><a href="#">Sign In</a></li> -->
+                                    <li><a href="/user_view_cart">View Cart</a></li>
+                                    <!-- <li><a href="#">My Wishlist</a></li> -->
+                                    <li><a href="/user_account">Track My Order</a></li>
+                                    <li><a href="#">Help</a></li>
+                                </ul><!-- End .widget-list -->
+                            </div><!-- End .widget -->
+                        </div><!-- End .col-sm-64 col-lg-3 -->
+                    </div><!-- End .row -->
+                </div><!-- End .container -->
+            </div><!-- End .footer-middle -->
+
+            <div class="footer-bottom">
+                <div class="container">
+                    <p class="footer-copyright">Copyright © 2019 Molla Store. All Rights Reserved.</p>
+                    <!-- End .footer-copyright -->
+                    <ul class="footer-menu">
+                        <li><a href="#">Terms Of Use</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul><!-- End .footer-menu -->
+
+                    <div class="social-icons social-icons-color">
+                        <span class="social-label">Social Media</span>
+                        <a href="#" class="social-icon social-facebook" title="Facebook" target="_blank"><i
+                                class="icon-facebook-f"></i></a>
+                        <a href="#" class="social-icon social-twitter" title="Twitter" target="_blank"><i
+                                class="icon-twitter"></i></a>
+                        <a href="#" class="social-icon social-instagram" title="Instagram" target="_blank"><i
+                                class="icon-instagram"></i></a>
+                        <a href="#" class="social-icon social-youtube" title="Youtube" target="_blank"><i
+                                class="icon-youtube"></i></a>
+                        <a href="#" class="social-icon social-pinterest" title="Pinterest" target="_blank"><i
+                                class="icon-pinterest"></i></a>
+                    </div><!-- End .soial-icons -->
+                </div><!-- End .container -->
+            </div><!-- End .footer-bottom -->
+        </footer><!-- End .footer -->
+    </div><!-- End .page-wrapper -->
+    <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
+
+
+
+    <script>
+        (function () {
+            total_price = document.getElementsByClassName('total_price')
+            orginal_price = document.getElementsByClassName('orginal_price')
+            offer = document.getElementsByClassName('offer')
+            for (var price = 0; price < total_price.length; price++) {
+                o_price = orginal_price[price].innerText
+                // console.log(o_price)
+                discount = parseInt(o_price) * (parseInt(offer[price].innerText) / 100)
+                total_price[price].innerHTML = parseInt(o_price - discount)
+
+            }
+
+        })()
+
+    </script>
+
+    <div class="container newsletter-popup-container mfp-hide" id="newsletter-popup-form">
+        <div class="row justify-content-center">
+            <div class="col-10">
+                <div class="row no-gutters bg-white newsletter-popup-content">
+                    <div class="col-xl-3-5col col-lg-7 banner-content-wrap">
+                        <div class="banner-content text-center">
+                            <img src="assets/images/popup/newsletter/logo.png" class="logo" alt="logo" width="60"
+                                height="15">
+                            <h2 class="banner-title">get <span>25<light>%</light></span> off</h2>
+                            <p>Subscribe to the Molla eCommerce newsletter to receive timely updates from your favorite
+                                products.</p>
+                            <form action="#">
+                                <div class="input-group input-group-round">
+                                    <input type="email" class="form-control form-control-white"
+                                        placeholder="Your Email Address" aria-label="Email Adress" required>
+                                    <div class="input-group-append">
+                                        <button class="btn" type="submit"><span>go</span></button>
+                                    </div><!-- .End .input-group-append -->
+                                </div><!-- .End .input-group -->
+                            </form>
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="register-policy-2" required>
+                                <label class="custom-control-label" for="register-policy-2">Do not show this popup
+                                    again</label>
+                            </div><!-- End .custom-checkbox -->
+                        </div>
+                    </div>
+                    <div class="col-xl-2-5col col-lg-5 ">
+                        <img src="assets/images/popup/newsletter/img-1.jpg" class="newsletter-img" alt="newsletter">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% endblock %}

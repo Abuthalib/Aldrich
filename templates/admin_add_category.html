@@ -1,0 +1,77 @@
+{% extends 'admin_base.html' %}
+{% block content %}
+{% load static %}
+<!-- ======= Header ======= -->
+
+<head>
+  <style>
+    .not-visible {
+      display: none;
+    }
+
+    #id_name,
+    #id_description,
+    #id_specification,
+    #id_stock_available,
+    #id_rating,
+    #id_total_sold,
+    #id_is_trusted,
+    #id_available_status,
+    #id_arrival_date,
+    #id_end_date,
+    #id_price,
+    #id_image_1,
+    #id_image_2,
+    #id_image_3,
+    #id_image_4,
+    #id_category {
+      color: red;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<!-- ======= Sidebar ======= -->
+
+<main id="main" class="main">
+
+  <div class="pagetitle">
+    <h1>Add Category</h1>
+
+  </div><!-- End Page Title -->
+
+  <section class="section">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title" style="color: rgb(9, 9, 9);">Add a new Category</h5>
+            <!-- user data  -->\
+            <form method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
+              <div id="message" style="color:red;font-size: 16px;">{{message}}</div>
+              <div style="display:flex;justify-content:space-between;">
+                <label style="color:black;">Category Name</label>
+                <div>
+                  <p>{{form.name}}</p>
+                </div>
+              </div>
+              <div style="display:flex;justify-content:space-between;">
+                <label style="color:black;">Category Image</label>s
+                <div>
+                  <p>{{form.image}}</p>
+                </div>
+              </div>
+              <br>
+              <div style="display:flex;justify-content:space-between;border:none;border-radius:20px;">
+                <button type="submit"
+                  style="border:none;border-radius:10px;background-color:rgb(0, 187, 255);color:white;font-size:15px;padding:5px 15px;">Upload</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main><!-- End #main -->
+
+{%endblock%}

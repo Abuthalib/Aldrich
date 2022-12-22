@@ -1,0 +1,203 @@
+
+{% extends 'admin_base.html' %}
+{% block content %}
+
+<head>
+    <style>
+        .input_box {
+            border-radius: 5px;
+            border: .5px solid rgb(4, 4, 4);
+            padding: 5px 10px;
+        }
+
+        .sign_button {
+            border-radius: 5px;
+            border: 1px solid rgb(107, 100, 209);
+            background-color: rgb(84, 84, 225);
+            color: white;
+            padding: 3px 10px;
+        }
+
+        .sign_button:hover {
+            background-color: white;
+            color: blue;
+            border: 1px solid white;
+        }
+
+        .links {
+            color: rgb(180, 174, 174);
+        }
+
+        .links:hover {
+            font-weight: bold;
+            color: rgb(255, 255, 255);
+        }
+
+        .column {
+            color: rgb(0, 0, 0);
+            margin: 0px 10px;
+        }
+
+        .lightfont {
+            font-weight: bold;
+            color: rgb(0, 0, 0);
+        }
+
+        #next_status {
+            background-color: rgba(0, 0, 0, 0);
+            border-radius: 10px;
+            color: rgb(0, 0, 0);
+            border: 1px solid rgb(0, 0, 0);
+            font-size: 12px;
+            padding: 10px;
+        }
+
+        #next_status:hover {
+            background-color: white;
+            color: black;
+        }
+    </style>
+</head>
+
+<body style="background-size: cover;">
+    <div style="display: flex;justify-content: center;align-items: center;height: 100vh;">
+        <div
+            style="border:2px solid rgb(71, 68, 68);padding:50px;background-color: rgb(255, 255, 255);border-radius: 10px;color: rgb(10, 9, 9);width: 30%;">
+            <h3 style="color: rgb(0, 0, 0);margin: 0px;">Edit Category Details</h3>
+            <p>see the details of this order</p>
+            <div id="message" style="color: rgb(231, 6, 6);font-size: 12px;"></div>
+            <form style="margin-top: 10px;" method="post" action="/admin_edit_category/{{category.id}}"
+                enctype="multipart/form-data">
+                {% csrf_token %}
+                <div style="display: flex;justify-content: space-between;margin: 10px;">
+                    <p class="column">Name</p>
+                    <input type="text" id="name" class="column lightfont" value={{category.name}} name="name"
+                        style="background-color: rgba(0,0,0,0);border:1px solid white;">
+                </div>
+                <div style="display: flex;justify-content: space-between;margin: 10px;">
+                    <p class="column">Image</p>
+                    <div>
+                        <img src="/media/{{category.image}}" style="width: 30%;margin:10px;border-radius:10px;">
+                        <input style="margin: 15px 15px;" type="file" id="image" name="image" class="column lightfont">
+                    </div>
+                </div>
+                <div style="color:rgb(0, 0, 0);display: flex;">
+                    <p class="column" style="margin: 10px;">Offer Percentage</p>
+                    <input type="number" name="offer_percentage" value="{{category.offer_percentage}}" min="0"
+                        max="100">
+                </div>
+                <button style="border-radius:10px ;">update</button>
+            </form>
+        </div>
+    </div>
+    </div>
+    </div>
+
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        function validate() {
+            var user_email = document.getElementById('user_email').value
+            var user_email_err = document.getElementById('user_email_err')
+            var user_password = document.getElementById('user_password').value
+            var user_password_err = document.getElementById('user_password_err')
+            var message = document.getElementById('message')
+
+            if (user_email == '') {
+                console.log('Email field cannot be empty');
+                user_email_err.innerHTML = 'Email field cannot be empty.'
+            }
+            else if (user_password == '') {
+                console.log('Password cannot be empty');
+                user_password_err.innerHTML = 'Password Cannot be empty'
+            }
+            else {
+                console.log('trying to log in with user data');
+                try_to_signin(user_email, user_password)
+            }
+        }
+
+        function try_to_signin(user_email, user_password) {
+
+            $.ajaxSetup({
+                data: { csrfmiddlewaretoken: '{{ csrf_token }}' }
+            })
+
+            $.ajax({
+                url: '/user_sign_in',
+                method: 'post',
+                data: { 'user_email': user_email, 'user_password': user_password },
+                success: function (response) {
+                    resp = response['user_authentication_status']
+                    if (resp == 'user_not_found') {
+                        console.log('user_not_found_error')
+                        message.innerHTML = 'user not found'
+                    }
+                    else if (resp == 'wrong_password') {
+                        console.log('wrong password error')
+                        message.innerHTML = 'wrong password'
+                    }
+                    else if (resp == 'user_not_active') {
+                        console.log('user is not active')
+                        message.innerHTML = 'user is not active'
+                    }
+                    else if (resp == 'success') {
+                        console.log('user is nice')
+                        window.location.href = '/user_home'
+                    }
+                    // window.location.href = '/user_home'
+                },
+            })
+        }
+
+        function status_change(order_id) {
+
+            console.log('did anyone called me')
+
+
+            order_status = document.getElementById('next_status')
+            console.log(order_status.value)
+
+            $.ajaxSetup({
+                data: { csrfmiddlewaretoken: '{{ csrf_token }}' }
+            })
+
+            $.ajax({
+                url: '/admin_change_order_status',
+                method: 'post',
+                data: { 'status': order_status.value, 'order_id': order_id },
+                success: function (response) {
+                    resp = response['status']
+                    if (resp == 'success') {
+                        console.log('order_status in server changed succesfully')
+                        window.location.reload()
+                        // message.innerHTML = 'user not found'
+                    }
+                }
+            })
+
+        }
+
+        function user_confirm(id) {
+            swal({
+                title: 'Are you sure to change the status to {{next_status}}?',
+                text: 'Once changed, you will not be able to change the status to previous state!',
+                icon: 'warning',
+                buttons: true,
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        swal('Status changed to {{next_status}}', {
+                            icon: 'success',
+                        });
+                        status_change(id)
+                    } else {
+                        swal('Status not changed');
+                        return false;
+                    }
+                });
+        }
+    </script>
+
+    {% endblock %}

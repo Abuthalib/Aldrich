@@ -1,0 +1,132 @@
+{% extends 'admin_base.html' %}
+{% block content %}
+
+<head>
+  <style>
+    #view {
+      border-radius: 5px;
+      background-color: rgb(16, 34, 77);
+      color: white;
+      border: none;
+      font-size: 12px;
+      padding: 5% 15%;
+      align-items: center;
+    }
+    #view:hover {
+      background-color: rgb(31, 92, 233);
+    }
+    .data {
+      text-align: left;
+      color: rgb(85, 83, 83);
+      font-weight: normal;
+      font-size: 1rem;
+    }
+  </style>
+</head>
+
+
+<main id="main" class="main" style="background-color: rgb(255, 255, 255);">
+  <div style="background-color: rgb(255, 255, 255);">
+    <div class="card-body">
+      <h5 class="card-title">All Orders</h5>
+      {% if orders %}
+      <table class="table table-sm col-lg-12 col-md-12">
+        <thead>
+          <tr>
+            <th scope="col" style="text-align:left;">USER NAME</th>
+            <th scope="col" style="text-align:left;">PRODUCT NAME</th>
+            <th scope="col" style="text-align:left;">ORDERED DATE</th>
+            <th scope="col" style="text-align:left;">PAYMENT METHOD</th>
+            <th scope="col" style="text-align:left;">ORDER STATUS</th>
+            <th scope="col" style="text-align:center;">VIEW</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!--########################################################################################################################-->
+          {% for order in orders %}
+     
+          <tr >
+            <td scope="row" class="data">{{order.user.full_name}}</td>
+            <td class="data">{{order.product.name}}</td>
+            <td class="data">{{order.Order_day}}/{{order.Order_month}}/{{order.Order_year}}</td>
+            <td class="data">{{order.payment_method}}</td>
+            {% if order.status == 'ordered' %}
+            <td style="background-color: rgb(133, 52, 52);color: white;text-align: center;border-radius: 5px;padding: 3px;width: 150px;">Ordered</td>  
+            {% elif order.status == 'shipped' %}
+            <td style="background-color: rgb(199, 202, 9);color: white;text-align: center;border-radius: 5px;padding: 3px;width: 150px;">Shipped</td>            
+            {% elif order.status == 'delivered' %}
+            <td class="data" style="background-color: rgb(59, 109, 52);color: white;text-align: center;border-radius: 5px;padding: 3px;">Delivered</td>          
+            {% elif order.status == 'return requested' %}
+            <td class="data" style="background-color: rgb(210, 11, 11);color: white;text-align: center;border-radius: 5px;padding: 3px">Return Request</td>            
+            {% elif order.status == 'Refunded' %}
+            <td class="data" style="background-color: rgb(207, 205, 202);color: white;text-align: center;border-radius: 5px;padding: 3px;">Refunded</td>           
+            {% elif order.status == 'Returned' %}
+            <td class="data" style="background-color: rgb(213, 134, 7);color: white;text-align: center;border-radius: 5px;padding: 3px;">Returned</td>
+            {% else %}
+            <td class="data" style="background-color: rgb(109, 122, 209);color: white;text-align: center;border-radius: 5px;padding: 3px;">Canceled</td>
+            {% endif %}
+            <td class="data" style="text-align: center;"><a href="/admin_order_details/{{order.id}}"><button id="view">View</button></a></td>
+          </tr>  
+  
+          {% endfor %}
+
+      
+
+          <!--########################################################################################################################-->
+        </tbody>
+      </table>
+        {% else %}
+        <div>
+           
+           <div style="text-align: center;margin: 30px;">
+                       <img src="/media/message_images/no data.png"  width="30%">
+
+           </div>
+           <div style="color: black;text-align: center;font-size: 20px;">Oops! You have no orders yet</div>
+           <p style="color: rgb(133, 127, 127);text-align: center;">
+            please wait for some while or come back after some time. 
+           </p>
+        </div>
+       
+        {% endif %}
+    </div>
+  </div>
+  <form action="/admin_list_orders" method="POST">
+    {% csrf_token %}
+     <nav aria-label="Page navigation example">
+    <ul class="pagination" >
+      <li class="page-item " id="disable_p">
+        <button class="page-link" type="submit" name="page_number" value="{{current_page|add:'-1'}}" onmouseover="if(this.value == '0'){document.getElementById('disable_p').classList.add('disabled')}">Previous</button>
+      </li>
+      
+      {% for i in available_pages %}
+        <li class="page-item">
+          <input type="text" name="duration" value="{{duration}}"  style="display: none;">
+  <input value ='{{forloop.counter}}' class="page-link" type="submit" name="page_number"></li>
+      {% endfor %}
+      <li class="page-item" id="disable_n">
+        <button class="page-link" type="submit" name="page_number" value="{{current_page|add:'1'}}" onmouseover="if(this.value > '{{available_pages|length}}'){document.getElementById('disable_n').classList.add('disabled')}">Next</button>
+      </li>
+    </ul>
+  </nav><!-- End Left/Start Pagination -->
+  </form>
+</main>
+
+<script>
+  function change_status(order_status, order_id) {
+    $.ajaxSetup({
+      data: { csrfmiddlewaretoken: '{{csrf_token}}' },
+    })
+    $.ajax({
+      url: '/order_status',
+      data: { 'order_id': order_id, 'order_status': order_status },
+      method: 'post',
+      success: function (response) {
+        console.log('admin changed the status')
+      }
+    })
+  }
+</script>
+
+{% endblock %}
+<!-- End small tables -->

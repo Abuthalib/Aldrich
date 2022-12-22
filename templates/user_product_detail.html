@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% load static %}
+
+<!-- molla/index-1.html  22 Nov 2019 09:55:06 GMT -->
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Aldrich shop</title>
+    <meta name="keywords" content="HTML5 Template">
+    <meta name="description" content="Molla - Bootstrap eCommerce Template">
+    <meta name="author" content="p-themes">
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'assets/images/icons/apple-touch-icon.png'%}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'assets/images/icons/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'assets/images/icons/favicon-16x16.png' %}">
+    <link rel="manifest" href="{% static 'assets/images/icons/site.html' %}">
+    <link rel="mask-icon" href="{% static 'assets/images/icons/safari-pinned-tab.svg' %}" color="#666666">
+    <link rel="shortcut icon" href="{% static 'assets/images/icons/favicon.ico' %}">
+    <meta name="apple-mobile-web-app-title" content="Molla">
+    <meta name="application-name" content="Molla">
+    <meta name="msapplication-TileColor" content="#cc9966">
+    <meta name="msapplication-config" content="{% static 'assets/images/icons/browserconfig.xml' %}">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="stylesheet"
+        href="{% static 'assets/vendor/line-awesome/line-awesome/line-awesome/css/line-awesome.min.css' %}">
+    <!-- Plugins CSS File -->
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/plugins/owl-carousel/owl.carousel.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/plugins/magnific-popup/magnific-popup.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/plugins/jquery.countdown.css' %}">
+    <!-- Main CSS File -->
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/skins/skin-demo-2.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/demos/demo-2.css' %}">
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <!-- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> -->
+    <script src="{% static 'assets/sweet.js' %}" type="text/javascript" ></script>
+
+    <style>
+        .color_1 {
+            color: black;
+            font-weight: normal;
+        }
+
+        .common_1 {
+            font-weight: 500;
+        }
+        .icon_c{
+            /* padding: 10px; */
+            font-size: 8px;
+        }
+        .icon_div{
+            margin:10px 0px;
+        }
+ 
+    </style>
+
+</head>
+
+<body>
+    <header class="header header-2 header-intro-clearance">
+        <div class="header-top"
+            style="position: sticky;top: 0;z-index: 5;width: 100%;background-color:#00005c;padding: 5px;color: white;">
+            <div class="container-fluid common_1">
+                <div style="margin: 0px 10px;padding: 0px;font-weight: bold;font-size: 18px;cursor: pointer;" onclick="window.location.href='/'">
+                   Aldrich<br><p style="margin: 0px;line-height: 2px;color:yellow;font-weight: bold;font-size: 12px;"><i>shop</i></p>
+                </div>
+                <div class="" style="width:50%;margin:5px;padding:0px;margin-right:0% 10%;">
+                    <div class="header-search  header-search-visible d-none d-lg-block"
+                        style="border: 1px solid rgb(84, 82, 82);border-radius: 20px;">
+                        <a href="#" class="search-toggle" role="button"><i class="icon-search"></i></a>
+                        <form action="/search_engine" method="get">
+                            <div class="header-search-wrapper search-wrapper-wide">
+                                <label for="q" class="sr-only">Search</label>
+                                <input type="search" class="form-control" name="keyword" id="q"
+                                    placeholder="Search product ..." required>
+                                <button class="btn " type="submit"><i
+                                        class="icon-search"></i></button>
+                            </div><!-- End .header-search-wrapper -->
+                        </form>
+                    </div><!-- End .header-search -->
+                </div>
+                <div class="header-right" style="width: 50%;justify-content: end;">
+                    <ul class="top-menu">
+                        <li>
+                            <a href="#">Links</a>
+                            <ul>
+                                <li>
+                                    <div class="header-dropdown common_1">
+                                        <a href="#">About Us</a>
+                                        <div class="header-menu  color_1">
+                                            <ul>
+                                                <li><a href="#">widecity</a></li>
+                                                <li><a href="#">Developers</a></li>
+                                                <li><a href="#">other service</a></li>
+                                            </ul>
+                                        </div><!-- End .header-menu -->
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="header-dropdown common_1">
+                                        <a href="#">help</a>
+                                        <div class="header-menu color_1">
+                                            <ul>
+                                                <li><a href="#">call us</a></li>
+                                                <li><a href="#">Report</a></li>
+                                                <li><a href="#">Bug fix</a></li>
+                                            </ul>
+                                        </div><!-- End .header-menu -->
+                                    </div>
+                                </li>
+
+                                {% if user == 'guest' %}
+                                <li><a href="/user_sign_in">Sign in</a></li>
+                                <li><a href="/user_sign_up">Sign up</a></li>
+                                <li>guest</li>
+                                <div
+                                    style="height: 30px ;border-radius:50%;width: 30px;justify-content: center;display: flex;background-color: rgb(243, 255, 243);align-items: center;border:1px solid rgb(120, 114, 114);margin:0px 10px;overflow: hidden;">
+                                    <img src="/media/profile/user.jpeg" alt="Profile" style="height: 100%;width: 100%;">
+                                </div>
+                                {% else %}
+                                <li><a href="/user_sign_out">sign out</a></li>
+                                <li>{{user.full_name}}</li>
+                                <div
+                                    style="height: 30px ;border-radius:50%;width: 30px;justify-content: center;display: flex;background-color: rgb(243, 255, 243);align-items: center;border:1px solid rgb(120, 114, 114);margin:0px 10px;overflow: hidden;">
+                                    <img src="/media/{{user.profile_image}}" width="100%" height="100%">
+                                </div>
+                                {% endif %}
+                            </ul>
+                        </li>
+                    </ul><!-- End .top-menu -->
+                </div><!-- End .header-right -->
+            </div><!-- End .container -->
+        </div><!-- End .header-top -->
+        <div class="header-middle" style="background-color: rgb(255, 255, 255);">
+            <div class="container-fluid" style="padding-top: 0px;margin: 0px 10px;">
+
+                <div  style="display: block;justify-content: center;">
+                    <button class="mobile-menu-toggler">
+                        <span class="sr-only" style="color: rgb(0, 0, 0);">Toggle mobile menu</span>
+                        <i class="icon-bars"></i>
+                    </button>
+                   
+                    
+                </div><!-- End .header-left -->
+               
+                <!-- end search -->
+                <div class="header-right " >
+                    <div class=" cart-dropdown " >
+                        <a href="/user_account" class="dropdown-toggle icon_div" role="button" aria-haspopup="true"
+                            aria-expanded="false" data-display="static">
+                            <i class="icon-user "></i>
+                            <div class="icon_c">Account</div>
+                            <!-- <span class="cart-count" >2</span> -->
+                        </a>
+                    </div>
+                    <div class="header-right">
+                        <div class=" cart-dropdown ">
+                            <a href="/user_view_cart" class="dropdown-toggle icon_div" role="button" aria-haspopup="true"
+                                aria-expanded="false" data-display="static">
+                                <i class="icon-shopping-cart " ></i>
+                                <div class="icon_c">cart</div>
+
+                                <span class="cart-count"  style="background-color: rgb(0, 115, 255);" >{{cart_count}}</span>
+                              
+                            </a>
+                        </div>
+                    </div><!-- End .header-right -->
+                    <div class="header-right">
+                        <div class="dropdown cart-dropdown ">
+                            <a href="/user_wallet" class="dropdown-toggle icon_div" role="button" aria-haspopup="true"
+                                aria-expanded="false" data-display="static">
+                                <img src="/media/icons/wallet.png" style="height:20px;font-weight: bold;margin: 5px;">
+                                <div class="icon_c">wallet</div>
+                                <!-- <span class="cart-count" >2</span> -->
+                            </a>
+                        </div>
+                    </div><!-- End .header-right -->
+
+                </div><!-- End .container -->
+            </div><!-- End .header-middle -->
+            <div class="header-bottom sticky-header">
+                <div class="container">
+                    <div class="header-left">
+                        <div class="dropdown category-dropdown">
+                            <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false" data-display="static"
+                                title="Browse Categories">
+                                Browse Categories
+                            </a>
+                            <div class="dropdown-menu">
+                                <nav class="side-nav">
+                                    <ul class="menu-vertical sf-arrows">
+                                        {% for category in categories %}
+
+                                        <li class="item-lead"><a
+                                                href="/user_category_view/{{category.name}}">{{category.name}}</a></li>
+
+                                        {% endfor %}
+                                    </ul><!-- End .menu-vertical -->
+                                </nav><!-- End .side-nav -->
+                            </div><!-- End .dropdown-menu -->
+                        </div><!-- End .category-dropdown -->
+                    </div><!-- End .header-left -->
+                   
+                </div><!-- End .container -->
+            </div><!-- End .header-bottom -->
+    </header><!-- End .header -->
+
+        <main class="main">
+            <nav aria-label="breadcrumb" class="breadcrumb-nav border-0 mb-0">
+                <div class="container d-flex align-items-center">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                        <li class="breadcrumb-item"><a href="#">Products</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Default</li>
+                    </ol>
+
+                   
+                </div><!-- End .container -->
+            </nav><!-- End .breadcrumb-nav -->
+
+            <div class="page-content">
+                <div class="container">
+                    <div class="product-details-top">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="product-gallery product-gallery-vertical">
+                                    <div class="row">
+                                        <figure class="product-main-image">
+                                            <img id="product-zoom" src="/media/{{product.image_1}}" data-zoom-image="/media/{{product.image_1}}" alt="product image">
+
+                                            <a href="#" id="btn-product-gallery" class="btn-product-gallery">
+                                                <i class="icon-arrows"></i>
+                                            </a>
+                                        </figure><!-- End .product-main-image -->
+
+                                        <div id="product-zoom-gallery" class="product-image-gallery">
+                                            <a class="product-gallery-item" href="#" data-image="/media/{{product.image_1}}" data-zoom-image="/media/{{product.image_1}}">
+                                                <img src="/media/{{product.image_1}}" alt="product side">
+                                            </a>
+
+                                            <a class="product-gallery-item" href="#" data-image="/media/{{product.image_2}}" data-zoom-image="/media/{{product.image_2}}">
+                                                <img src="/media/{{product.image_2}}" alt="product cross">
+                                            </a>
+
+                                            <a class="product-gallery-item" href="#" data-image="/media/{{product.image_3}}" data-zoom-image="/media/{{product.image_3}}">
+                                                <img src="/media/{{product.image_3}}" alt="product with model">
+                                            </a>
+
+                                            <a class="product-gallery-item" href="#" data-image="/media/{{product.image_4}}" data-zoom-image="/media/{{product.image_4}}">
+                                                <img src="/media/{{product.image_4}}" alt="product back">
+                                            </a>
+                                        </div><!-- End .product-image-gallery -->
+                                    </div><!-- End .row -->
+                                </div><!-- End .product-gallery -->
+                            </div><!-- End .col-md-6 -->
+
+                            <div class="col-md-6">
+                                <div class="product-details">
+                                    <h1 class="product-title">{{product.name}}</h1><!-- End .product-title -->
+
+                                    <div class="ratings-container">
+                                        <div class="ratings">
+                                            <div class="ratings-val" style="width: 80%;"></div><!-- End .ratings-val -->
+                                        </div><!-- End .ratings -->
+                                        <a class="ratings-text" href="#product-review-link" id="review-link">( 2 Reviews )</a>
+                                    </div><!-- End .rating-container -->
+
+                                    <div class="product-price" style="color: red;">
+                                        <div> Rs <span id="total_price">{{product.price}}</span> </div> 
+                                        <span style="font-size: 13px;color: rgb(75, 70, 70);margin-left: 10px;">
+                                            <div> - <span id="offer">{{product.offer_percentage}}</span>%</div>
+                                            <div><s>Rs.<span id="orginal_price">{{product.price}}</span></s> </div>
+                                        </span>
+                                    </div><!-- End .product-price -->
+
+                                    <div class="product-content">
+                                        <p>{{product.description}}</p>
+                                        </div><!-- End .product-content -->
+
+                                    <div class="product-details-action">
+                                        <a onclick="add_to_cart('{{product.id}}')" class="btn-product btn-cart"><span>add to cart</span></a>
+
+                                    
+                                    </div><!-- End .product-details-action -->
+
+                                    <div class="product-details-footer">
+                                            <div class="product-cat">
+                                                <span>Category:</span>
+                                                <a href="/user_category_view/{{product.category}}">{{product.category}}</a>
+                                        </div><!-- End .product-cat -->
+
+                                        <div class="social-icons social-icons-sm">
+                                            <span class="social-label">Share:</span>
+                                            <a href="#" class="social-icon" title="Facebook" target="_blank"><i class="icon-facebook-f"></i></a>
+                                            <a href="#" class="social-icon" title="Twitter" target="_blank"><i class="icon-twitter"></i></a>
+                                            <a href="#" class="social-icon" title="Instagram" target="_blank"><i class="icon-instagram"></i></a>
+                                            <a href="#" class="social-icon" title="Pinterest" target="_blank"><i class="icon-pinterest"></i></a>
+                                        </div>
+                                    </div><!-- End .product-details-footer -->
+                                </div><!-- End .product-details -->
+                            </div><!-- End .col-md-6 -->
+                        </div><!-- End .row -->
+                    </div><!-- End .product-details-top -->
+
+                    <div class="product-details-tab">
+                        <ul class="nav nav-pills justify-content-center" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="product-desc-link" data-toggle="tab" href="#product-desc-tab" role="tab" aria-controls="product-desc-tab" aria-selected="true">Description</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="product-info-link" data-toggle="tab" href="#product-info-tab" role="tab" aria-controls="product-info-tab" aria-selected="false">Specifications</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane fade show active" id="product-desc-tab" role="tabpanel" aria-labelledby="product-desc-link">
+                                <div class="product-desc-content">
+                                    <h3>Product Information</h3>
+                                    <p>
+                                        {{product.description}}
+                                    </p></div><!-- End .product-desc-content -->
+                            </div><!-- .End .tab-pane -->
+                            <div class="tab-pane fade" id="product-info-tab" role="tabpanel" aria-labelledby="product-info-link">
+                                <div class="product-desc-content">
+                                    <h3>Information</h3>
+                                <p>
+                                    {{product.specification}}
+                                </p>
+                                </div><!-- End .product-desc-content -->
+                            </div><!-- .End .tab-pane -->
+                          
+                            <div class="tab-pane fade" id="product-review-tab" role="tabpanel" aria-labelledby="product-review-link">
+                                <div class="reviews">
+                                    <h3>Reviews (2)</h3>
+                                    <div class="review">
+                                        <div class="row no-gutters">
+                                            <div class="col-auto">
+                                                <h4><a href="#">Samanta J.</a></h4>
+                                                <div class="ratings-container">
+                                                    <div class="ratings">
+                                                        <div class="ratings-val" style="width: 80%;"></div><!-- End .ratings-val -->
+                                                    </div><!-- End .ratings -->
+                                                </div><!-- End .rating-container -->
+                                                <span class="review-date">6 days ago</span>
+                                            </div><!-- End .col -->
+                                            <div class="col">
+                                                <h4>Good, perfect size</h4>
+
+                                                <div class="review-content">
+                                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus cum dolores assumenda asperiores facilis porro reprehenderit animi culpa atque blanditiis commodi perspiciatis doloremque, possimus, explicabo, autem fugit beatae quae voluptas!</p>
+                                                </div><!-- End .review-content -->
+
+                                                <div class="review-action">
+                                                    <a href="#"><i class="icon-thumbs-up"></i>Helpful (2)</a>
+                                                    <a href="#"><i class="icon-thumbs-down"></i>Unhelpful (0)</a>
+                                                </div><!-- End .review-action -->
+                                            </div><!-- End .col-auto -->
+                                        </div><!-- End .row -->
+                                    </div><!-- End .review -->
+
+                                    <div class="review">
+                                        <div class="row no-gutters">
+                                            <div class="col-auto">
+                                                <h4><a href="#">John Doe</a></h4>
+                                                <div class="ratings-container">
+                                                    <div class="ratings">
+                                                        <div class="ratings-val" style="width: 100%;"></div><!-- End .ratings-val -->
+                                                    </div><!-- End .ratings -->
+                                                </div><!-- End .rating-container -->
+                                                <span class="review-date">5 days ago</span>
+                                            </div><!-- End .col -->
+                                            <div class="col">
+                                                <h4>Very good</h4>
+
+                                                <div class="review-content">
+                                                    <p>Sed, molestias, tempore? Ex dolor esse iure hic veniam laborum blanditiis laudantium iste amet. Cum non voluptate eos enim, ab cumque nam, modi, quas iure illum repellendus, blanditiis perspiciatis beatae!</p>
+                                                </div><!-- End .review-content -->
+
+                                                <div class="review-action">
+                                                    <a href="#"><i class="icon-thumbs-up"></i>Helpful (0)</a>
+                                                    <a href="#"><i class="icon-thumbs-down"></i>Unhelpful (0)</a>
+                                                </div><!-- End .review-action -->
+                                            </div><!-- End .col-auto -->
+                                        </div><!-- End .row -->
+                                    </div><!-- End .review -->
+                                </div><!-- End .reviews -->
+                            </div><!-- .End .tab-pane -->
+                        </div><!-- End .tab-content -->
+                    </div><!-- End .product-details-tab -->
+
+                    <h2 class="title text-center mb-4">You May Also Like</h2><!-- End .title text-center -->
+
+                    <div class="owl-carousel owl-simple carousel-equal-height carousel-with-shadow" data-toggle="owl" 
+                        data-owl-options='{
+                            "nav": false, 
+                            "dots": true,
+                            "margin": 20,
+                            "loop": false,
+                            "responsive": {
+                                "0": {
+                                    "items":1
+                                },
+                                "480": {
+                                    "items":2
+                                },
+                                "768": {
+                                    "items":3
+                                },
+                                "992": {
+                                    "items":4
+                                },
+                                "1200": {
+                                    "items":4,
+                                    "nav": true,
+                                    "dots": false
+                                }
+                            }
+                        }'>
+                        {% for product in category %}
+                        {% if forloop.counter <= 4 %}
+                        <div class="product product-7 text-center">
+                            <figure class="product-media">
+                                <span class="product-label label-new">New</span>
+                                <a href="/user_product_detail/{{product.id}}">
+                                    <img src="/media/{{product.image_1}}" alt="Product image" class="product-image">
+                                </a>
+
+                            </figure><!-- End .product-media -->
+
+                            <div class="product-body">
+                                <div class="product-cat">
+                                    <a href="#">{{product.category}}</a>
+                                </div><!-- End .product-cat -->
+                                <h3 class="product-title"><a href="product.html">Brown paperbag waist <br>pencil skirt</a></h3><!-- End .product-title -->
+                                <div class="product-price">
+                                    Rs. {{product.price}}
+                                </div><!-- End .product-price -->
+                                <div class="ratings-container">
+                                    <div class="ratings">
+                                        <div class="ratings-val" style="width: 20%;"></div><!-- End .ratings-val -->
+                                    </div><!-- End .ratings -->
+                                    <span class="ratings-text">( 2 Reviews )</span>
+                                </div><!-- End .rating-container -->
+
+                                <div class="product-nav product-nav-thumbs">
+                                    <a href="#" class="active">
+                                        <img src="/media/{{product.image_2}}" alt="product desc">
+                                    </a>
+                                    <a href="#">
+                                        <img src="/media/{{product.image_3}}" alt="product desc">
+                                    </a>
+
+                                    <a href="#">
+                                        <img src="/media/{{product.image_4}}" alt="product desc">
+                                    </a>
+                                </div><!-- End .product-nav -->
+                            </div><!-- End .product-body -->
+                        </div><!-- End .product -->
+
+                        {% endif %}
+                       {% endfor %}
+                    </div><!-- End .owl-carousel -->
+                </div><!-- End .container -->
+            </div><!-- End .page-content -->
+        </main><!-- End .main -->
+
+        <footer class="footer">
+        	<div class="footer-middle">
+	            <div class="container">
+	            	<div class="row">
+	            		<div class="col-sm-6 col-lg-3">
+	            			<div class="widget widget-about">
+	            				<img src="assets/images/logo.png" class="footer-logo" alt="Footer Logo" width="105" height="25">
+	            				<p>Praesent dapibus, neque id cursus ucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. </p>
+
+	            				<div class="social-icons">
+	            					<a href="#" class="social-icon" target="_blank" title="Facebook"><i class="icon-facebook-f"></i></a>
+	            					<a href="#" class="social-icon" target="_blank" title="Twitter"><i class="icon-twitter"></i></a>
+	            					<a href="#" class="social-icon" target="_blank" title="Instagram"><i class="icon-instagram"></i></a>
+	            					<a href="#" class="social-icon" target="_blank" title="Youtube"><i class="icon-youtube"></i></a>
+	            					<a href="#" class="social-icon" target="_blank" title="Pinterest"><i class="icon-pinterest"></i></a>
+	            				</div><!-- End .soial-icons -->
+	            			</div><!-- End .widget about-widget -->
+	            		</div><!-- End .col-sm-6 col-lg-3 -->
+
+	            		<div class="col-sm-6 col-lg-3">
+	            			<div class="widget">
+	            				<h4 class="widget-title">Useful Links</h4><!-- End .widget-title -->
+
+	            				<ul class="widget-list">
+	            					<li><a href="about.html">About Molla</a></li>
+	            					<li><a href="#">How to shop on Molla</a></li>
+	            					<li><a href="#">FAQ</a></li>
+	            					<li><a href="contact.html">Contact us</a></li>
+	            					<li><a href="login.html">Log in</a></li>
+	            				</ul><!-- End .widget-list -->
+	            			</div><!-- End .widget -->
+	            		</div><!-- End .col-sm-6 col-lg-3 -->
+
+	            		<div class="col-sm-6 col-lg-3">
+	            			<div class="widget">
+	            				<h4 class="widget-title">Customer Service</h4><!-- End .widget-title -->
+
+	            				<ul class="widget-list">
+	            					<li><a href="#">Payment Methods</a></li>
+	            					<li><a href="#">Money-back guarantee!</a></li>
+	            					<li><a href="#">Returns</a></li>
+	            					<li><a href="#">Shipping</a></li>
+	            					<li><a href="#">Terms and conditions</a></li>
+	            					<li><a href="#">Privacy Policy</a></li>
+	            				</ul><!-- End .widget-list -->
+	            			</div><!-- End .widget -->
+	            		</div><!-- End .col-sm-6 col-lg-3 -->
+
+	            		<div class="col-sm-6 col-lg-3">
+	            			<div class="widget">
+	            				<h4 class="widget-title">My Account</h4><!-- End .widget-title -->
+
+	            				<ul class="widget-list">
+	            					<li><a href="#">Sign In</a></li>
+	            					<li><a href="cart.html">View Cart</a></li>
+	            					<li><a href="#">My Wishlist</a></li>
+	            					<li><a href="#">Track My Order</a></li>
+	            					<li><a href="#">Help</a></li>
+	            				</ul><!-- End .widget-list -->
+	            			</div><!-- End .widget -->
+	            		</div><!-- End .col-sm-6 col-lg-3 -->
+	            	</div><!-- End .row -->
+	            </div><!-- End .container -->
+	        </div><!-- End .footer-middle -->
+
+	        <div class="footer-bottom">
+	        	<div class="container">
+	        		<p class="footer-copyright">Copyright © 2019 Molla Store. All Rights Reserved.</p><!-- End .footer-copyright -->
+	        		<figure class="footer-payments">
+	        			<img src="assets/images/payments.png" alt="Payment methods" width="272" height="20">
+	        		</figure><!-- End .footer-payments -->
+	        	</div><!-- End .container -->
+	        </div><!-- End .footer-bottom -->
+        </footer><!-- End .footer -->
+    </div><!-- End .page-wrapper -->
+    <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
+   <!-- Mobile Menu -->
+   <div class="mobile-menu-overlay"></div><!-- End .mobil-menu-overlay -->
+
+   <div class="mobile-menu-container mobile-menu-light">
+       <div class="mobile-menu-wrapper">
+           <span class="mobile-menu-close"><i class="icon-close"></i></span>
+
+           <form action="#" method="get" class="mobile-search">
+               <label for="mobile-search" class="sr-only">Search</label>
+               <input type="search" class="form-control" name="mobile-search" id="mobile-search"
+                   placeholder="Search product ..." required>
+               <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
+           </form>
+
+           <ul class="nav nav-pills-mobile nav-border-anim" role="tablist">
+               <li class="nav-item">
+                   <a class="nav-link active" id="mobile-menu-link" data-toggle="tab" href="#mobile-menu-tab"
+                       role="tab" aria-controls="mobile-menu-tab" aria-selected="true">Menu</a>
+               </li>
+               <li class="nav-item">
+                   <a class="nav-link" id="mobile-cats-link" data-toggle="tab" href="#mobile-cats-tab" role="tab"
+                       aria-controls="mobile-cats-tab" aria-selected="false">Categories</a>
+               </li>
+           </ul>
+
+           <div class="tab-content">
+               <div class="tab-pane fade show active" id="mobile-menu-tab" role="tabpanel"
+                   aria-labelledby="mobile-menu-link">
+                   <nav class="mobile-nav">
+                       <ul class="mobile-menu">
+                           <li class="active">
+                               <a href="/">Home</a>
+
+                               
+                           </li>
+                           <li>
+                               <a href="/user_account">Account</a>
+                             
+                           </li>
+                           <li>
+                               <a href="#products-featured-tab" class="sf-with-ul">Trusted Products</a>
+                            
+                           </li>
+                     
+                           <li>
+                               <a href="#products-sale-tab">Best offers</a>
+                              
+                           </li>
+                           <li>
+                               <a href="#products-featured-tab">Top Rated</a>
+
+                           </li>
+                           <li>
+                               <a href="/user_sign_out">Sign out</a>
+      
+                           </li>
+                       </ul>
+                   </nav><!-- End .mobile-nav -->
+               </div><!-- .End .tab-pane -->
+               <div class="tab-pane fade" id="mobile-cats-tab" role="tabpanel" aria-labelledby="mobile-cats-link">
+                   <nav class="mobile-cats-nav">
+                       <ul class="mobile-cats-menu">
+                           {% for category in categories %}
+                           <li><a href="/user_category_view/{{category.name}}">{{category.name}}</a></li>
+                           {% endfor %}
+                       </ul><!-- End .mobile-cats-menu -->
+                   </nav><!-- End .mobile-cats-nav -->
+               </div><!-- .End .tab-pane -->
+           </div><!-- End .tab-content -->
+
+           <div class="social-icons">
+               <a href="#" class="social-icon" target="_blank" title="Facebook"><i class="icon-facebook-f"></i></a>
+               <a href="#" class="social-icon" target="_blank" title="Twitter"><i class="icon-twitter"></i></a>
+               <a href="#" class="social-icon" target="_blank" title="Instagram"><i class="icon-instagram"></i></a>
+               <a href="#" class="social-icon" target="_blank" title="Youtube"><i class="icon-youtube"></i></a>
+           </div><!-- End .social-icons -->
+       </div><!-- End .mobile-menu-wrapper -->
+   </div><!-- End .mobile-menu-container -->
+
+    
+    <!-- Plugins JS File -->
+    <script src="{% static 'assets/js/jquery.min.js' %}"></script>
+    <script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'assets/js/jquery.hoverIntent.min.js' %}"></script>
+    <script src="{% static 'assets/js/jquery.waypoints.min.js' %}"></script>
+    <script src="{% static 'assets/js/superfish.min.js' %}"></script>
+    <script src="{% static 'assets/js/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'assets/js/bootstrap-input-spinner.js' %}"></script>
+    <script src="{% static 'assets/js/jquery.elevateZoom.min.js' %}"></script>
+    <script src="{% static 'assets/js/bootstrap-input-spinner.js' %}"></script>
+    <script src="{% static 'assets/js/jquery.magnific-popup.min.js' %}"></script>
+    <!-- Main JS File -->
+    <script src="{% static 'assets/js/main.js' %}"></script>
+
+<script>
+    function add_to_cart(product_id){
+        console.log(product_id+ 'from ajax')
+
+        $.ajaxSetup({
+            data:{'csrfmiddlewaretoken':'{{csrf_token}}'},
+        });
+
+        $.ajax({
+            url:'/user_add_to_cart',
+            method:'post',
+            data:{'product_id':product_id},
+            success:function(response)
+            {
+                if(response['response'] == 'product_added'){
+                    console.log('product_added')
+                        Swal.fire({
+                        title: 'Product Added to Cart successfully. ',
+                        showDenyButton: true,
+                        showCancelButton: true,
+                        confirmButtonText: 'ok',
+                        cancelButtonText: 'view cart',
+                        }).then((result) => {
+                            if(result.value == true){
+                            $.ajaxSetup({
+                                data: { csrfmiddlewaretoken: '{{ csrf_token }}' }
+                            })
+                            }
+                            else{
+                                window.location.href = '/user_view_cart'
+                            }
+                    })
+                }
+            
+                else if(response['response'] == 'user_not_found'){
+                    console.log('user not signed in')
+                    window.location.href = '/user_sign_in'
+
+                }
+                else{
+                    console.log('something went wrong')
+                }
+
+            }  
+        });
+    }
+    
+</script>
+<script>
+    (function(){
+        total_price = document.getElementById('total_price')
+        orginal_price = document.getElementById('orginal_price')
+        offer = document.getElementById('offer')
+    
+        discount = parseInt(orginal_price.innerText) * (parseInt(offer.innerText) / 100 )
+        // console.log(discount)
+
+        total_price.innerHTML =parseInt( parseInt(orginal_price.innerText) - discount)
+
+    
+        
+    })()
+    
+    </script>
+</body>
+
+
+<!-- molla/product.html  22 Nov 2019 09:55:05 GMT -->
+</html>

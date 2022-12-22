@@ -1,0 +1,59 @@
+{% extends 'user_base.html' %}
+{% block content %}
+
+<head>
+    <style>
+        .input_box {
+            border-radius: 5px;
+            border:.5px solid rgb(4, 4, 4);
+            padding:5px 10px;
+        }
+        .sign_button{
+            border-radius: 5px;
+            border:1px solid rgb(107, 100, 209);
+            background-color: rgb(84, 84, 225);
+            color:white;
+            padding:3px 10px;
+        }
+        .sign_button:hover{
+            background-color: white;
+            color: blue;
+            border: 1px solid white;
+        }
+        .agree_button{
+            color:rgb(14, 10, 10) ;
+        }
+        .agree_button:hover{
+            color: rgb(93, 82, 82);
+            background-color: greenyellow;
+        }
+    </style>
+</head>
+
+<body style="background-image:url('https://img.freepik.com/free-photo/shiny-vintage-leather-male-shoes_1203-6453.jpg?w=996&t=st=1668767567~exp=1668768167~hmac=014e5250504609df5bd9e7afc4b3134f1348169bc2a2372f1bf3db01dab47997');background-size: cover;">
+    <div style="display: flex;justify-content: center;">
+        <div
+            style="border:2px solid rgb(255, 255, 255);margin:20vh;padding:50px;background-color: rgba(24, 13, 35,.7);border-radius: 10px;color: rgb(10, 9, 9);">
+            <h3 style="color: white;margin: 0px;">welcome to Aldrich Fashions</h3>
+            <p>you are now a member of widecity</p>
+            <ul>
+                <li style="color: white;font-weight:bold;">About Us</li>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis odit quibusdam explicabo sunt ab cupiditate adipisci nesciunt unde modi minima suscipit, doloribus, aperiam incidunt rem quo maxime labore. Vel, voluptatibus?</p>
+                <li style="color: white;font-weight:bold;">our Other Services</li>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis odit quibusdam explicabo sunt ab cupiditate adipisci nesciunt unde modi minima suscipit, doloribus, aperiam incidunt rem quo maxime labore. Vel, voluptatibus?</p>
+                <li style="color: white;font-weight:bold;">Contact us</li>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis odit quibusdam explicabo sunt ab cupiditate adipisci nesciunt unde modi minima suscipit, doloribus, aperiam incidunt rem quo maxime labore. Vel, voluptatibus?</p>
+                <li style="color: white;font-weight:bold;">Terms and Conditions</li>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis odit quibusdam explicabo sunt ab cupiditate adipisci nesciunt unde modi minima suscipit, doloribus, aperiam incidunt rem quo maxime labore. Vel, voluptatibus?</p>
+                <form action="/user_home" method="post">
+                    {% csrf_token %}
+                <input type="checkbox" id="agree" required><span style="color: #ffffff;" > I agree to all of your terms and conditions of aldrich</span>
+                <p><button type="submit" class="agree_button">Continue</button></p>
+                </form>
+            </ul>
+            </div>
+        </div>
+    </div>
+
+
+    {% endblock %}

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>order placed</title>
+    <style>
+        .go_back{
+            border:1px solid black;
+            border-radius:10px;
+            padding:8px;
+            color:rgb(0, 0, 0);
+            margin:20px;
+            cursor:pointer;
+            background-color: white;
+        }
+        .go_back:hover{
+            background-color: rgb(0, 191, 255);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<div style="display:flex;justify-content:center;margin-top:150px;">
+    <div style="color:grey;text-align:center;margin:0px;font-family:sans-serif;">
+        <img src="https://1.bp.blogspot.com/-qobLO0a1LD4/WEqOPz0panI/AAAAAAAEuqA/axPmAZsyEGotT_tTq2QvOZ-iky_etQRbgCLcB/s1600/AW328916_03.gif" style="height:200px;">
+        <h2 style="color:black;text-align:center;margin:0px;font-size:20px;">Great Work! Order Placed</h2>
+        <a href="/"><button class="go_back">Home</button></a>
+    </div>
+</div>
+<script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+
+<script>
+    console.log('waiting to get ready')
+    $(document).ready(function(){
+        console.log('your files are ready')
+        setTimeout(home,3000)
+    })
+
+    function home(){
+        console.log('its after 3 seconds')
+        window.location.href = '/'
+    }
+</script>
+
+</body>
+</html>

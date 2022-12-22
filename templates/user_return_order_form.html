@@ -1,0 +1,71 @@
+{% extends 'user_base.html' %}
+{% block content %}
+{% load static %}
+
+<body>
+<div class="page-wrapper" >
+ 
+    <main class="main" >
+     
+        <nav aria-label="breadcrumb" class="breadcrumb-nav" >
+            <div class="container">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                    <li class="breadcrumb-item"><a href="#">Shop</a></li>
+                    <li aria-current="page" class="breadcrumb-item active">Checkout</li>
+                </ol>
+            </div><!-- End .container -->
+        </nav><!-- End .breadcrumb-nav -->
+
+        <div class="page-content">
+            <div class="/checkout" style="display: flex;justify-content: center;">
+
+                    <form action="/user_return_order/{{product.id}}" method="POST" style="padding: 100px;background-color: rgb(255, 255, 255);display: flex;justify-content: center;border:1px solid rgb(0, 0, 0);border-radius: 10px;box-shadow: 0px 20px 20px;">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div  id="new_address">
+                                <h2 class="checkout-title" style="color: rgb(0, 0, 0);width: 50%;">Please mention your reason for return</h2><!-- End .checkout-title -->
+                                
+                                <div >
+
+                                    <div style="display: block;">
+                                        <input  name="reason"  type="radio" value="Brought by mistake" checked>
+                                        <label style="color: rgb(8, 7, 7);margin: 5px;">Brought by mistake</label>          
+                                    </div><!-- End .col-sm-6 -->
+
+                                    <div style="display: block;">
+                                        <input  name="reason"  type="radio" value="Better Price available">
+                                        <label style="color: rgb(0, 0, 0);margin: 5px;">Better Price available</label>          
+                                    </div><!-- End .col-sm-6 -->
+
+                                    <div style="display: block;">
+                                        <input  name="reason"  type="radio" value="Performance or quality not adequate">
+                                        <label style="color: rgb(0, 0, 0);margin: 5px;">Performance or quality not adequate</label>          
+                                    </div><!-- End .col-sm-6 -->
+
+                                    <div style="display: block;">
+                                        <input  name="reason"  type="radio" value="Product damaged">
+                                        <label style="color: rgb(0, 0, 0);margin: 5px;">Product damaged</label>          
+                                    </div><!-- End .col-sm-6 -->
+
+                                    <div style="display: block;">
+                                        <input  name="reason"  type="radio" value="Item arrived too late">
+                                        <label style="color: rgb(0, 0, 0);margin: 5px;">Item arrived too late</label>          
+                                    </div><!-- End .col-sm-6 -->
+
+                                    <div style="display: block;">
+                                        <input  name="reason"  type="radio">
+                                        <label style="color: rgb(0, 0, 0);margin: 5px;">Product damaged</label>          
+                                    </div><!-- End .col-sm-6 -->
+
+                                    
+                                </div><!-- End .custom-checkbox -->
+
+                                <input type="submit" style="background-color: rgb(8, 157, 221);border-radius: 5px;color:white;border:none;margin-top: 20px;">
+
+
+                            </div><!-- End .col-lg-9 -->
+                        </div>
+                    </form>
+                    </div></div>
+{% endblock %}
