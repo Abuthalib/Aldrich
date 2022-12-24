@@ -422,16 +422,14 @@ def admin_edit_Product(request):
     categories = Category.objects.all()
 
     if action == 'edit':
-        return render(request, 'admin_edit_product.html',
-                      {'product': product, 'admin': this_admin, 'categories': categories})
+        return render(request, 'admin_edit_product.html', {'product': product, 'admin': this_admin,'categories':categories})
     elif action == 'delete':
         try:
             os.remove(product.image_1.path)
             os.remove(product.image_2.path)
             os.remove(product.image_3.path)
             os.remove(product.image_4.path)
-        except:
-            pass
+        except:pass
         product.delete()
         return redirect(admin_list_product)
     return redirect('/admin_panel')
@@ -819,14 +817,14 @@ def user_sign_up(request):
         user_password = request.POST.get('user_password')
         user_contact_number = request.POST.get('user_contact_number')
         profile_image = request.FILES.get('profile_image')
-        all_users = Users.objects.all()
+        all_users  = Users.objects.all()
         for user in all_users:
             if user_email == user.email:
-                return render(request, 'user_sign_up.html', {'message': 'The user Already have an Account.'})
+                return render(request, 'user_sign_up.html',{'message':'The user Already have an Account.'})
         for user in all_users:
             if user_contact_number == user.contact_number:
-                return render(request, 'user_sign_up.html', {'message': 'The Phone Number Already Exist!'})
-        referece_id = random.randrange(1000000000, 9999999999)
+                return render(request, 'user_sign_up.html',{'message':'The Phone Number Already Exist!'})
+        referece_id = random.randrange(1000000000,9999999999)
         # getting all the available users
         try:
             new_user = Users.objects.create(
@@ -837,6 +835,7 @@ def user_sign_up(request):
                 profile_image=profile_image,
                 reference_id=referece_id
             )
+        
             new_user.save()
             user_sign_up_status = 'user_created'
             return redirect(welcome_new_user)
@@ -844,8 +843,6 @@ def user_sign_up(request):
             user_sign_up_status = 'failed'
         return redirect(user_home)
     return render(request, 'user_sign_up.html')
-
-
 # end
 ###############################################################################################
 
@@ -1170,6 +1167,7 @@ def user_add_address(request):
 @never_cache
 def user_otp_sign_in(request):
     '''handle the user otp sign in'''
+    print("user otp ethii")
     otp_sign_in_user_status = ''
     if request.method == 'POST':
         print('helloooo')
@@ -1181,11 +1179,11 @@ def user_otp_sign_in(request):
             print('heloooo')
 
             user = Users.objects.get(contact_number=contact_number).email
-           # client = Client('ACe76401d83965afd3d5d67ecb05038e1f',
-            #                'f5ba986fbd2c054c446f74dd299fde5b')
+            client = Client('ACe76401d83965afd3d5d67ecb05038e1f',
+                                 'f5ba986fbd2c054c446f74dd299fde5b')
             verification = client.verify \
                 .v2 \
-             #   .services('VA45231356f6ed0671efb52f636ae50624') \
+                .services('VA45231356f6ed0671efb52f636ae50624') \
                 .verifications \
                 .create(to='+91{}'.format(contact_number), channel='sms')
             request.session['user'] = user
@@ -1214,11 +1212,11 @@ def user_otp_sign_in_validation(request):
         print(otp)
         print(user_otp)
         contact_number = request.session['user_num']
-        #client = Client('ACe76401d83965afd3d5d67ecb05038e1f',
-         #               'f5ba986fbd2c054c446f74dd299fde5b')
+        client = Client('ACe76401d83965afd3d5d67ecb05038e1f',
+                        'f5ba986fbd2c054c446f74dd299fde5b')
         verification_check = client.verify \
             .v2 \
-           # .services('VA45231356f6ed0671efb52f636ae50624') \
+            .services('VA45231356f6ed0671efb52f636ae50624') \
             .verification_checks \
             .create(to='+91{}'.format(contact_number), code=user_otp)
 

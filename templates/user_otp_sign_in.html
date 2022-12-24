@@ -136,13 +136,15 @@
             $.ajaxSetup({
                 data:{csrfmiddlewaretoken :'{{ csrf_token }}'}
             })
-            alert(user_contact_number)
             
             $.ajax({
                 url:'/user_otp_sign_in',
                 method:'post',
                 data:{'user_num':user_contact_number},
                 success:function(response){
+                    console.log(response)
+                    alert(user_contact_number)
+
                     resp = response['otp_sign_in_user_status']
                     if(resp == 'user_not_found'){
                         console.log('user_not_found_error')

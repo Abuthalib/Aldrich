@@ -554,7 +554,7 @@
 </div><!-- End .modal -->
 
 <script>
-
+         
     function quantity_minus(id) {
 
         quantity = document.getElementById(id + 'q').innerHTML
@@ -566,7 +566,7 @@
             method: "post",
             data: { 'cart_id': id, 'quantity': quantity, 'task': 'minus' },
             success: function (data) {
-
+                
                 console.log('stock available : ' + data['stock_available'])
                 document.getElementById(id + 'q').innerHTML = data['updated_quantity']
                 document.getElementById(id + 'tp').innerHTML = data['total_price']
@@ -590,7 +590,7 @@
             method: "post",
             data: { 'cart_id': id, 'quantity': quantity, 'task': 'plus' },
             success: function (data) {
-
+                console.log(data['updated_quantity']+"jjjjjjjjj")
                 console.log('stock available : ' + data['stock_available'])
                 document.getElementById(id + 'q').innerHTML = data['updated_quantity']
                 document.getElementById(id + 'tp').innerHTML = data['total_price']

@@ -1,12 +1,51 @@
-{% extends 'user_base.html' %}
-{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+{% load static %}
+
+<!-- molla/index-1.html  22 Nov 2019 09:55:06 GMT -->
 
 <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Aldrich Shopping</title>
+    <meta name="keywords" content="HTML5 Template">
+    <meta name="description" content="Molla - Bootstrap eCommerce Template">
+    <meta name="author" content="p-themes">
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'assets/images/icons/apple-touch-icon.png'%}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'assets/images/icons/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'assets/images/icons/favicon-16x16.png' %}">
+    <link rel="manifest" href="{% static 'assets/images/icons/site.html' %}">
+    <link rel="mask-icon" href="{% static 'assets/images/icons/safari-pinned-tab.svg' %}" color="#666666">
+    <link rel="shortcut icon" href="{% static 'assets/images/icons/favicon.ico' %}">
+    <meta name="apple-mobile-web-app-title" content="Molla">
+    <meta name="application-name" content="Molla">
+    <meta name="msapplication-TileColor" content="#cc9966">
+    <meta name="msapplication-config" content="{% static 'assets/images/icons/browserconfig.xml' %}">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="stylesheet"
+        href="{% static 'assets/vendor/line-awesome/line-awesome/line-awesome/css/line-awesome.min.css' %}">
+    <!-- Plugins CSS File -->
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/plugins/owl-carousel/owl.carousel.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/plugins/magnific-popup/magnific-popup.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/plugins/jquery.countdown.css' %}">
+    <!-- Main CSS File -->
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/skins/skin-demo-2.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/demos/demo-2.css' %}">
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <!-- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> -->
+
     <style>
         .input_box {
             border-radius: 5px;
             border:.5px solid rgb(4, 4, 4);
             padding:5px 10px;
+            width: 100%;
         }
         .sign_button{
             border-radius: 5px;
@@ -28,49 +67,53 @@
             font-weight: bold;
             color: rgb(255, 255, 255);
         }
+        .profile_image{
+            width: 100px;
+            border-radius: 50px;
+            margin: 20px;
+            margin-top: 0px;
+        }
     </style>
 </head>
 
-<body style="background-image:url('media/gifs/anim2.gif');background-size: cover;">
-    <div style="display: flex;justify-content: center;">
+<body>
+    <div style="display: flex;justify-content: center;background-color: rgba(255, 255, 255, 0.8);align-items: center;height: 100%;width: 100%;">
         <div
-            style="border:2px solid rgb(255, 255, 255);margin:20vh;padding:50px;background-color: rgba(24, 13, 35,.7);border-radius: 10px;color: rgb(10, 9, 9);">
-            <h3 style="color: white;margin: 0px;">sign up</h3>
-            <p>create your widecity account</p>
-            <div id="message" style="color:red;font-size: 12px;"></div>
-            <div style="margin-top: 10px;">
+        style="border:2px solid rgb(224, 212, 212);padding:50px;background-color: rgb(24, 13, 35);border-radius: 10px;color: rgb(0, 0, 0);box-shadow: 0px 20px 20px;">
+        <h3 style="color: white;margin: 0px;">sign up</h3>
+           <p style="margin: 0px;">create your Aldrich account</p>
+           <p style="color:red">{{message}}</p>
+            <form action="/user_sign_up" style="margin-top: 10px;" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div style="display: flex;justify-content: center;">
+                    <img src="/media/profile/user.jpeg" class="profile_image"  >
+                </div>
+                <p style="color: white;">Profile Image</p>
+                <input type="file" id="profile_image" name="profile_image" required>
                 <p style="color: white;">Full Name</p>
-                <input type="text" id="user_full_name" placeholder="eg.aldrich" class="input_box">
+                <input type="text" id="user_full_name" placeholder="eg.wide city" class="input_box" name="user_full_name">
                 <div id="user_full_name_err" style="color:rgb(255, 0, 0);font-size: 14px;"></div>
                 <p style="color: white;">Email Id</p>
-                <input type="text" id="user_email" placeholder="eg.aldrich@gmail.com" class="input_box">
+                <input type="text" id="user_email" placeholder="eg.aldrich@gmail.com" class="input_box" name="user_email">
                 <div id="user_email_err" style="color:rgb(255, 0, 0);font-size: 14px;"></div>
                 <p style="color: rgb(255, 255, 255);">Password</p>
-                <input type="password" id="user_password" placeholder="eg.Password@123" class="input_box">
+                <input type="password" id="user_password" placeholder="eg.Password@123" class="input_box" name="user_password">
                 <div id="user_password_err" style="color:rgb(255, 0, 0) ;font-size: 14px;"></div>
                 <p style="color: rgb(255, 255, 255);">Contact Number</p>
-                <input type="number" id="user_contact_number" placeholder="eg.0123456789" class="input_box">
+                <input type="number" id="user_contact_number" placeholder="eg.0123456789" class="input_box" name="user_contact_number">
                 <div id="user_contact_number_err" style="color:rgb(255, 0, 0);font-size: 14px;"></div>
-                <p style="color: rgb(255, 255, 255);">User Reference ID (optional)</p>       
-                <input type="text" id="user_reference_id" placeholder="eg.JDfihsFSDEFAER" class="input_box">
-                <div id="user_reference_id_err" style="color:rgb(255, 0, 0);font-size: 14px;"></div>
-
                 <p style="display: flex; justify-content: center;margin:10px;border-radius: 10px;">
-                    <input type="button" value="sign up" onclick="validate()" class="sign_button">
+                    <input type="submit" value="sign up" onclick="return validate()" class="sign_button">
                     <div style="display: flex;flex-direction: column;font-size: 14px;">
                         <p>Already have an account |<a href="/user_sign_in" class="links"> sign in</a></p>
                     </div>
                 </p>
-            </div>
+            </form>
         </div>
     </div>
 
     <script>
-
-        
         function validate() {
-
-
             var user_full_name = document.getElementById('user_full_name').value
             var user_email = document.getElementById('user_email').value
             var user_password = document.getElementById('user_password').value
@@ -82,10 +125,6 @@
             var user_contact_number_err = document.getElementById('user_contact_number_err')
 
 
-            var user_reference_id = document.getElementById('user_reference_id').value
-            var user_reference_id_err = document.getElementById('user_reference_id_err')
-           
-            console.log(user_reference_id)
             // empty validation
             if (user_full_name == '') {
                 console.log('your name field cannot be empty.');
@@ -93,13 +132,15 @@
                 user_email_err.innerHTML = ''
                 user_password_err.innerHTML = ''
                 user_contact_number_err.innerHTML = ''
+                return false
             }            
-            else if (user_email == '') {
+            else if (user_email == '' || /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(user_email) == false ) {
                 console.log('email Cannot be empty');
-                user_email_err.innerHTML = 'email Cannot be empty'
+                user_email_err.innerHTML = 'email Cannot be empty<br>Invalid Email Id'
                 user_full_name_err.innerHTML = ''
                 user_password_err.innerHTML = ''
                 user_contact_number_err.innerHTML = ''
+                return false
             }            
             else if (user_password == '') {
                 console.log('Password cannot be empty');
@@ -107,13 +148,15 @@
                 user_email_err.innerHTML = ''
                 user_full_name_err.innerHTML = ''
                 user_contact_number_err.innerHTML = ''
+                return false
             }
-            else if (user_contact_number == '') {
+            else if (user_contact_number == '' || user_contact_number.length != 10) {
                 console.log('Contact number Cannot be empty');
-                user_contact_number_err.innerHTML = 'Contact number Cannot be empty'
+                user_contact_number_err.innerHTML = 'Contact number Cannot be empty!<br>It must be 10 numbers!'
                 user_email_err.innerHTML = ''
                 user_password_err.innerHTML = ''
                 user_full_name_err.innerHTML = ''
+                return false
             }
             else {
                 user_contact_number_err.innerHTML = ''
@@ -122,56 +165,12 @@
                 user_full_name_err.innerHTML = ''
                 console.log('trying to sign up with user data');
                 // calling the try_to_sighin function to request the server for authentication usering ajax
-                try_to_signup(user_full_name,user_email,user_password,user_contact_number,user_reference_id)
+            return true
+                // try_to_signup(user_full_name,user_email,user_password,user_contact_number)
             }
         }
 
-        function try_to_signup(user_full_name,user_email,user_password,user_contact_number,user_reference_id){
-            
-            console.log(user_reference_id)
-            
-            $.ajaxSetup({
-                data:{csrfmiddlewaretoken :'{{ csrf_token }}'}
-            })
+    // </script>
 
-            // post request to user_sign_in in views.py
-            $.ajax({
-                url:'/user_sign_up',
-                method:'post',
-                data:{
-                    'user_full_name':user_full_name,
-                    'user_email':user_email,
-                    'user_password':user_password,
-                    'user_contact_number':user_contact_number,
-                    'user_reference_id':user_reference_id,
-                },
-                success:function(response){
-                    resp = response['user_sign_up_status']
-                    reference_id_status = response['reference_id_status']
-                    if(reference_id_status == 'refered'){
-                        console.log('refference added')
-                    }
-                    else{
-                        console.log('reference id does not exist')
-                    }
-
-                    if(resp == 'user_created'){
-                        console.log('user_created')
-                        console.log('redirecting to the welcome page')
-                        window.location.href = '/welcome_new_user'
-                    }
-                    else if(resp == 'failed'){
-                        console.log('failed to create the user account')
-                        document.getElementById('message').innerText = 'failed to create the user account'
-                    }
-                    else if(resp == 'user_exist'){
-                        console.log('user already exist. Please try another details.')
-                        document.getElementById('message').innerText = 'user already exist. Please try another details.'
-                    }
-                },
-            })
-        }
-    </script>
-
-
-    {% endblock %}
+</body>
+</html>

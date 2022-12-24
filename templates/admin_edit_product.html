@@ -5,18 +5,18 @@
 <head>
     <style>
         .title{
-            color:rgb(255, 255, 255);
+            color:rgb(0, 0, 0);
             text-transform: uppercase;
         }
         .input{
             margin: 10px;
-            border-radius: 10px;
+            border-radius: 5px;
             padding: 5px;
             border: 1px solid grey;
             text-transform: uppercase;
             font-weight: bold;
-            background-color: rgba(0,0,0,.5);
-            color: rgb(182, 182, 182);
+            background-color: rgba(255, 255, 255, 0.5);
+            color: rgb(132, 132, 132);
         }
         .submit{
           background-color:rgb(12, 120, 216);
@@ -36,14 +36,16 @@
 
   <main id="main" class="main" >
     <div class="pagetitle">
-      <h1 style="color: white;">UPDATE '{{product.name}}'</h1>
+      <h1 style="color: rgb(0, 0, 0);">UPDATE '{{product.name}}'</h1>
     </div><!-- End Page Title -->
     <section class="section">
       <div class="row">
         <div class="col-lg-8">
-          <div class="card" style="background-color:rgba(0,0,0,.5) ; border:1px solid white;">
+          <div class="card" style="background-color:rgba(255, 255, 255, 0.5) ; border:1px solid white;">
             <div class="card-body">
-              <h5 class="card-title" style="color:white ;"></h5>
+              <h4 style="color:rgb(0, 0, 0) ;font-weight: bold;margin-bottom: 0px;">Update Your Product</h4>
+              <p style="color:rgb(104, 101, 101) ;margin-bottom: 20px;">Get your product updated in an Easy</p>
+              <p style="color: rgba(255, 0, 0, 0.752);font-size: 14px;" id="message"></p>
 <!--////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
               <!-- Default Table -->
 
@@ -51,60 +53,75 @@
                         {%csrf_token%}
                         <div style="display:flex;justify-content:space-between;" >
                           <p class="title">ID&nbsp</p>
-                          <input name="id" class="input" value="{{product.id}}" type="text" readonly>
+                          <input name="product_id" class="input" value="{{product.id}}" type="text" readonly>
                         </div>
                         <div style="display:flex;justify-content:space-between;" >
                           <p class="title">Name&nbsp</p>
-                          <input name="product_name" class="input" value="{{product.name}}" type="text" >
+                          <input name="product_name" class="input" value="{{product.name}}" type="text" maxlength="20" required onkeyup="if(this.value.length == 0){document.getElementById('message').innerText='Name Field Cannot be Empty!'}else{document.getElementById('message').innerText=''}">
                         </div>
                         <div style="display:flex;justify-content:space-between;">
                           <p class="title">Price&nbsp</p>
-                          <input name="product_price" class="input" value="{{product.price}}" type="text" >
+                          <input name="product_price" class="input" value="{{product.price}}" type="number" min="1" max="10000" required onkeyup="if(this.value.length == 0 || this.value > 10000 || this.value < 1){document.getElementById('message').innerHTML='Price Field Cannot be Empty!<br>You can only add products upto a maximum price of 10000 and minmum of 1.'}else{document.getElementById('message').innerText=''}">
                         </div>
                         <div style="display:flex;justify-content:space-between;" >
                         <p class="title">Category&nbsp</p>
-                        <input name="product_category"class="input" value="{{product.category}}" type="text" >
+                        <select name="product_category" class="input" >
+                          <option>{{product.category}}</option>
+                          {% for cat in categories %}
+                          <option>{{cat.name}}</option>
+                          {% endfor %}
+                        </select>
                         </div>
                         <div style="display:flex;justify-content:space-between;">
                           <p class="title">Description&nbsp</p>
-                          <input name="product_description"class="input" value="{{product.description}}" type="text" >
+                          <input name="product_description"class="input" value="{{product.description}}" type="text" required>
                         </div>
                         <div style="display:flex;justify-content:space-between;">
                           <p class="title">specification&nbsp</p>
-                          <input name="product_specification" class="input" value="{{product.specification}}" type="text" >
+                          <input name="product_specification" class="input" value="{{product.specification}}" type="text" required>
                         </div>
                         <div style="display:flex;justify-content:space-between;">
                          <p class="title">Stock Available&nbsp</p>
-                         <input name="product_stock_available" class="input" value="{{product.stock_available}}" type="text" >
+                         <input name="product_stock_available" class="input" value="{{product.stock_available}}" type="number" required>
                         </div>
-                        <div style="display:flex;justify-content:space-between;">
-                          <p class="title">Rating&nbsp</p>
-                          <input name="product_rating" class="input"value="{{product.rating}}" type="text" >
-                        </div>
+                       
                         <div style="display:flex;justify-content:space-between;">
                           <p class="title">Status&nbsp</p>
-                          <input name="product_status" class="input"value="{{product.available_status}}" type="text" >
+                          <select name="product_status" class="input"value="{{product.available_status}}" type="text" >
+                            <option>available</option>
+                            <option>not_available</option>
+                            </select>
                         </div>
                         <div style="display:flex;justify-content:space-between;">
                           <p class="title">IMAGE 1&nbsp</p>
-                          <input name="image_1" class="input" type="file" >
+                          <div style="display: flex;flex-direction: column;color: rgb(108, 106, 106);">
+                            <input name="image_1" class="input" type="file" >
+                            <label style="margin-left: 10px;">{{product.image_1}}</label>
+                          </div>
+                        
                         </div>
                         <div style="display:flex;justify-content:space-between;">
                           <p class="title">IMAGE 2&nbsp</p>
-                          <input name="image_2" class="input"  type="file" >
+                          <div style="display: flex;flex-direction: column;color: rgb(108, 106, 106);">
+                            <input name="image_2" class="input" type="file" >
+                            <label style="margin-left: 10px;">{{product.image_2}}</label>
+                          </div>
                         </div>
                         <div style="display:flex;justify-content:space-between;">
                           <p class="title">IMAGE 3&nbsp</p>
-                          <input name="image_3" class="input" type="file" >
+                          <div style="display: flex;flex-direction: column;color: rgb(108, 106, 106);">
+                            <input name="image_3" class="input" type="file" >
+                            <label style="margin-left: 10px;">{{product.image_3}}</label>
+                          </div>
                         </div>
                         <div style="display:flex;justify-content:space-between;">
                           <p class="title">IMAGE 4&nbsp</p>
-                          <input name="image_4" class="input" type="file" >
+                          <div style="display: flex;flex-direction: column;color: rgb(108, 106, 106);">
+                            <input name="image_4" class="input" type="file" >
+                            <label style="margin-left: 10px;">{{product.image_4}}</label>
+                          </div>
                         </div>
-                        <div style="display:flex;justify-content:space-between;">
-                          <p class="title">offer percentage &nbsp</p>
-                          <input name="offer_percentage" type="number" min="0" max="100" value="{{product.offer_percentage}}">
-                        </div>
+                       
                           <div style="margin:10px;" style="display:flex;justify-content:space-between;">
                             <input type="submit" class="submit">
                             </div>

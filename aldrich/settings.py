@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-hp4d$)v$tm!#07wksk@#q1r_c2w2f)i6d+(r7+paaltb!_9ju(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['35.74.246.163', 'aldrichonline.ml', 'www.aldrichonline.ml']
 
 # Application definition
 
@@ -82,16 +82,16 @@ WSGI_APPLICATION = 'aldrich.wsgi.application'
 
 DATABASES = {
     'default': {
-        # 'ENGINE': 'django.db.backends.postgresql',
-        # 'NAME': 'test2',
-        # 'USER': 'postgres',
-        # 'PASSWORD': 'thalu813',
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'myproject',
-        'USER': 'myprojectuser',
-        'PASSWORD': 'password',
-        'HOST': 'localhost',
-        'PORT': '',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'test2',
+        'USER': 'postgres',
+        'PASSWORD': 'thalu813',
+        # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        # 'NAME': 'myproject',
+        # 'USER': 'myprojectuser',
+        # 'PASSWORD': '',
+        # 'HOST': 'localhost',
+        # 'PORT': '',
     }
 }
 
